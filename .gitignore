@@ -1,0 +1,24 @@
+# ── Dependencies (too large, reinstalled via npm install)
+frontend/node_modules/
+
+# ── Build output (generated, not needed in repo)
+frontend/dist/
+
+# ── Environment variables (SENSITIVE - contains your GAS URL)
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.env.*.local
+
+# ── OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor folders
+.vscode/
+.idea/
+
+# ── Logs
+*.log
+npm-debug.log*
