@@ -55,10 +55,10 @@
     </transition>
 
     <div class="flex justify-between mt-2">
-      <button class="btn-secondary" @click="store.setProfilingStep(4)">← Back</button>
+      <button class="btn-secondary" @click="store.setProfilingStep(4)">Back</button>
       <button class="btn-amvat flex items-center gap-2" :disabled="saving" @click="showConfirm = true">
         <!-- <span class="text-base">💾</span>  -->
-        Save &amp; Proceed to AMVAT →
+        Save &amp; Proceed to AMVAT
       </button>
     </div>
 
@@ -417,7 +417,7 @@
                 </div>
 
                 <div class="flex justify-between mt-6">
-                  <button class="btn-secondary" @click="modalPart = 1">← Previous</button>
+                  <button class="btn-secondary" @click="modalPart = 1">Previous</button>
                   <button class="btn-success flex items-center gap-2" @click="saveMember">
                     <span class="material-icons-round" style="font-size:16px">save</span>
                     {{ editIndex !== null ? "Update Member" : "Save Member" }}
