@@ -6,6 +6,9 @@
   body { @apply font-sans min-h-screen; background: #f5f3ff; color: #1e1b4b; }
   h2   { @apply text-2xl font-semibold text-primary; }
   h3   { @apply text-lg font-medium; color: #4c1d95; }
+  /* Gray placeholder for native selects */
+  select { color: #1e1b4b; }
+  select.placeholder-gray { color: #9ca3af; }
 }
 
 @layer components {
@@ -32,15 +35,19 @@
 
   .floating-label {
     @apply absolute top-2.5 left-0 text-sm pointer-events-none transition-all duration-200;
-    color: #8b5cf6;
+    color: #9ca3af; /* gray-400 — looks like a placeholder */
   }
   .field input:focus    ~ .floating-label,
   .field input:not(:placeholder-shown) ~ .floating-label,
   .field select:focus   ~ .floating-label,
   .field select:valid   ~ .floating-label {
-    @apply -top-4 text-xs;
-    color: #7c3aed;
+    @apply -top-4 text-xs font-medium;
+    color: #7c3aed; /* purple when active/filled */
   }
+
+  /* Actual input placeholder text also gray */
+  .field input::placeholder { color: #9ca3af; }
+  .field select option:first-child { color: #9ca3af; }
 
   /* ── Buttons ── */
   .btn {
@@ -188,3 +195,11 @@
 .fade-in   { animation: fadeIn .35s ease both; }
 .bounce-in { animation: bounceIn .4s ease both; }
 .hidden    { display: none !important; }
+
+/* ── Gray placeholder for empty selects ── */
+.field select:required:invalid,
+.field select[value=""] {
+  color: #9ca3af;
+}
+.field select option { color: #1e1b4b; }
+.field select option[disabled] { color: #9ca3af; }
