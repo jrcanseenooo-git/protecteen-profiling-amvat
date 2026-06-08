@@ -44,7 +44,7 @@
       </table>
     </div>
     <div v-else class="bg-gray-50 rounded-xl p-8 text-center text-gray-400 text-sm mb-6 border-2 border-dashed border-gray-200">
-      <p class="text-2xl mb-2">👨‍👩‍👧</p>
+      <!-- <p class="text-2xl mb-2">👨‍👩‍👧</p> -->
       No family members added yet. Click "Add Family Member" to begin.
     </div>
 
@@ -57,7 +57,8 @@
     <div class="flex justify-between mt-2">
       <button class="btn-secondary" @click="store.setProfilingStep(4)">← Back</button>
       <button class="btn-amvat flex items-center gap-2" :disabled="saving" @click="showConfirm = true">
-        <span class="text-base">💾</span> Save &amp; Proceed to AMVAT →
+        <!-- <span class="text-base">💾</span>  -->
+        Save &amp; Proceed to AMVAT →
       </button>
     </div>
 
@@ -500,7 +501,7 @@
               Family Members: <strong>{{ members.length }}</strong>
             </p>
             <div class="bg-purple-50 border border-purple-200 rounded-xl p-3 text-xs text-purple-700 mb-5 text-left">
-              ℹ️ Profiling data will be saved to the spreadsheet and the system will proceed to the AMVAT assessment.
+              ℹ️ Profiling data will be saved and the system will proceed to the Adolescent Mother Vulnerability Assessment Tool.
             </div>
             <div class="flex gap-3">
               <button class="btn-secondary flex-1" @click="showConfirm = false">Wait, Go Back</button>
