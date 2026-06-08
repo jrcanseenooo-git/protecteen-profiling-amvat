@@ -489,13 +489,18 @@ function searchProfiling(searchTerm) {
   searchTerm = searchTerm.toLowerCase().trim();
   const ss = SpreadsheetApp.openById(SPREADSHEET_IDS.profiling);
   const results = [];
+  const debugInfo = [];
  
   Object.keys(REGION_MAP).forEach(region => {
     const sheet = ss.getSheetByName(REGION_MAP[region]);
-    if (!sheet || sheet.getLastRow() <= 1) return;
+    if (!sheet) { debugInfo.push(region + ': sheet not found'); return; }
+ 
+    const lastRow = sheet.getLastRow();
+    if (lastRow <= 1) { debugInfo.push(region + ': empty sheet (' + lastRow + ' rows)'); return; }
  
     const data    = sheet.getDataRange().getValues();
     const headers = data[0].map(h => String(h).trim());
+ 
     const col = {
       fn:  headers.indexOf('First Name'),
       mn:  headers.indexOf('Middle Name'),
@@ -507,6 +512,9 @@ function searchProfiling(searchTerm) {
       dob: headers.indexOf('Date of Birth'),
       con: headers.indexOf('Contact'),
     };
+ 
+    debugInfo.push(region + ': rows=' + lastRow + ' fnCol=' + col.fn + ' lnCol=' + col.ln + ' headers[5]=' + headers[5] + ' headers[7]=' + headers[7]);
+ 
     if (col.fn === -1 || col.ln === -1) return;
  
     for (let i = 1; i < data.length && results.length < 30; i++) {
@@ -530,7 +538,7 @@ function searchProfiling(searchTerm) {
     }
   });
  
-  return { success: true, results, count: results.length };
+  return { success: true, results, count: results.length, debug: debugInfo };
 }
  
 // ============================================================
