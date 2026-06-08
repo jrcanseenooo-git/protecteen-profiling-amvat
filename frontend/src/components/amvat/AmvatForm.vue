@@ -330,8 +330,8 @@
 
       <!-- Navigation -->
       <div class="flex justify-between mt-6">
-        <button class="btn-secondary" @click="prevPage">← Back</button>
-        <button v-if="page < TOTAL_PAGES" class="btn-amvat" @click="nextPage">Next →</button>
+        <button class="btn-secondary" @click="prevPage">Back</button>
+        <button v-if="page < TOTAL_PAGES" class="btn-amvat" @click="nextPage">Next</button>
         <button v-else class="btn-success" :disabled="submitting" @click="validateAndConfirm">
           Submit Assessment
         </button>
