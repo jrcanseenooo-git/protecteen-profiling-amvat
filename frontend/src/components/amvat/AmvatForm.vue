@@ -3,9 +3,9 @@
 
     <!-- ═══ PAGE 0: Patnubay / Introduction ═══ -->
     <div v-if="page === 0" class="fade-in text-center">
-      <div class="inline-block bg-amvat text-white text-xs font-bold px-3 py-1 rounded-full mb-3">AMVAT</div>
+      <!-- <div class="inline-block bg-amvat text-white text-xs font-bold px-3 py-1 rounded-full mb-3">AMVAT</div> -->
       <h2 class="text-amvat text-xl font-bold mb-1">Adolescent Mother Vulnerability Assessment Tool</h2>
-      <p class="text-xs text-gray-400 mb-6">AMVAT</p>
+      <p class="text-xs text-gray-400 mb-6"></p>
 
       <div class="text-left bg-white border border-gray-200 rounded-2xl p-6 shadow-sm mb-6">
         <p class="text-sm font-semibold text-gray-700 mb-2">
@@ -29,7 +29,7 @@
     <template v-if="page >= 1">
       <!-- Header -->
       <div class="text-center mb-4">
-        <div class="inline-block bg-amvat text-white text-xs font-bold px-3 py-1 rounded-full mb-2">AMVAT</div>
+        <!-- <div class="inline-block bg-amvat text-white text-xs font-bold px-3 py-1 rounded-full mb-2">AMVAT</div> -->
         <h2 class="text-amvat text-xl font-bold">Adolescent Mother Vulnerability Assessment Tool</h2>
         <p class="text-xs text-gray-400 mt-1 italic">Walang tama o maling sagot. Sumagot nang tapat at ayon sa iyong tunay na karanasan at nararamdaman.</p>
       </div>
@@ -42,10 +42,7 @@
 
       <!-- ═══ PAGE 1: Respondent Profile ═══ -->
       <div v-if="page === 1" class="fade-in">
-        <div class="section-title">Respondent's Profile</div>
-        <div class="bg-purple-50 border border-purple-200 rounded-xl p-3 mb-4 text-sm text-purple-700 flex items-center gap-2">
-          <span>✓</span> Na-prefill mula sa profiling data. Maaari mong baguhin kung kinakailangan.
-        </div>
+        <div class="section-title mb-8">Respondent's Profile</div>
 
         <div class="field">
           <input v-model="p.name" type="text" placeholder=" " required />
@@ -70,15 +67,19 @@
             <input v-model="p.contact" type="tel" placeholder=" " required />
             <label class="floating-label"><span class="text-red-500 mr-0.5">*</span>Contact Number</label>
           </div>
-          <div class="field">
+          <div :class="['field', p.civilStatus ? 'has-value' : '']">
             <select v-model="p.civilStatus" required>
               <option value="" disabled hidden></option>
-              <option>Single</option><option>Married</option>
-              <option>Live-in/Common-Law</option><option>Separated</option><option>Widowed</option>
+              <option>Single</option>
+              <option>Married</option>
+              <option>Live-in/Common-Law</option>
+              <option>Divorced</option>
+              <option>Separated</option>
+              <option>Widowed</option>
             </select>
             <label class="floating-label"><span class="text-red-500 mr-0.5">*</span>Civil Status</label>
           </div>
-          <div class="field">
+          <div :class="['field', p.hasChild ? 'has-value' : '']">
             <select v-model="p.hasChild" @change="onHasChildChange" required>
               <option value="" disabled hidden></option>
               <option value="Oo">Oo</option><option value="Hindi">Hindi</option>
@@ -89,7 +90,7 @@
             <input v-model.number="p.numChildren" type="number" min="1" :disabled="p.hasChild !== 'Oo'" placeholder=" " />
             <label class="floating-label">Ilang anak? (How many children?)</label>
           </div>
-          <div class="field">
+          <div :class="['field', p.livingWithPartner ? 'has-value' : '']">
             <select v-model="p.livingWithPartner" required>
               <option value="" disabled hidden></option>
               <option value="Oo">Oo</option><option value="Hindi">Hindi</option>
@@ -97,7 +98,7 @@
             <label class="floating-label"><span class="text-red-500 mr-0.5">*</span>Kasama ang partner?</label>
           </div>
           <!-- Religion: show text input if Others -->
-          <div class="field">
+          <div :class="['field', p.religion ? 'has-value' : '']">
             <select v-model="p.religion" @change="onReligionChange" required>
               <option value="" disabled hidden></option>
               <option>None</option><option>Roman Catholic</option><option>Islam</option>
@@ -119,7 +120,7 @@
             <label class="floating-label"><span class="text-red-500 mr-0.5">*</span>Please specify Religion</label>
             <p v-if="amvatOtherErr.religion" class="text-danger text-xs mt-1">⚠️ Please specify Religion.</p>
           </div>
-          <div class="field">
+          <div :class="['field', p.education ? 'has-value' : '']">
             <select v-model="p.education" required>
               <option value="" disabled hidden></option>
               <option value="Without Formal Education">Without Formal Education</option>
@@ -135,7 +136,7 @@
             <label class="floating-label"><span class="text-red-500 mr-0.5">*</span>Highest Educational Attainment</label>
           </div>
           <!-- Occupation: show text input if Others -->
-          <div class="field">
+          <div :class="['field', p.occupation ? 'has-value' : '']">
             <select v-model="p.occupation" @change="onOccupationChange" required>
               <option value="" disabled hidden></option>
               <option value="None">None</option>
@@ -197,12 +198,12 @@
           <!-- 1. Child disability -->
           <div class="part2-card">
             <div class="part2-label">
-              <span class="material-icons-round part2-icon">child_care</span>
+              <!-- <span class="material-icons-round part2-icon">child_care</span> -->
+              <span class="part2-icon">1</span>
               <div class="flex-1">
                 <p class="font-semibold text-gray-800 text-sm">May anak ka ba na may kapansanan o malubhang karamdaman?</p>
                 <p class="text-xs text-gray-400 mt-0.5">Does your child have a disability or serious illness?</p>
               </div>
-              <span class="deduction-badge">−8 pts if Oo</span>
             </div>
             <div class="flex gap-3 mt-3">
               <div class="yn-btn" :class="{ active: p.child_disability === 'Oo' }" @click="p.child_disability = 'Oo'">Oo</div>
@@ -213,12 +214,12 @@
           <!-- 2. Mother disability -->
           <div class="part2-card">
             <div class="part2-label">
-              <span class="material-icons-round part2-icon">person</span>
+              <!-- <span class="material-icons-round part2-icon">person</span> -->
+              <span class="part2-icon">2</span>
               <div class="flex-1">
                 <p class="font-semibold text-gray-800 text-sm">Ikaw ba ay may kapansanan o may iniindang malubhang karamdaman?</p>
                 <p class="text-xs text-gray-400 mt-0.5">Do you have a disability or serious illness?</p>
               </div>
-              <span class="deduction-badge">−7 pts if Oo</span>
             </div>
             <div class="flex gap-3 mt-3">
               <div class="yn-btn" :class="{ active: p.mother_disability === 'Oo' }" @click="p.mother_disability = 'Oo'">Oo</div>
@@ -229,18 +230,18 @@
           <!-- 3. Living parents → DROPDOWN -->
           <div class="part2-card">
             <div class="part2-label">
-              <span class="material-icons-round part2-icon">family_restroom</span>
+              <!-- <span class="material-icons-round part2-icon">family_restroom</span> -->
+              <span class="part2-icon">3</span>
               <div class="flex-1">
                 <p class="font-semibold text-gray-800 text-sm">Sitwasyon ng mga magulang</p>
                 <p class="text-xs text-gray-400 mt-0.5">Ang iyong mga magulang ba ay parehong buhay ngunit hindi ka na naninirahan kasama sila, o ikaw ba ay kasalukuyang tinataguyod ng isang solo parent, o wala nang nabubuhay sa iyong parehong magulang?</p>
               </div>
-              <span class="deduction-badge">Up to −6 pts</span>
             </div>
             <div class="field mt-3 mb-0">
               <select v-model="p.living_parents" required>
                 <option value="" disabled hidden></option>
                 <option v-for="opt in livingParentsOpts" :key="opt.value" :value="opt.value">
-                  {{ opt.label }}{{ opt.pts < 0 ? ` (${opt.pts} pts)` : '' }}
+                  {{ opt.label }}
                 </option>
               </select>
               <label class="floating-label"><span class="text-red-500 mr-0.5">*</span>Pumili ng sitwasyon</label>
@@ -250,12 +251,12 @@
           <!-- 4. Violence -->
           <div class="part2-card">
             <div class="part2-label">
-              <span class="material-icons-round part2-icon" style="color:#dc3545">warning</span>
+              <!-- <span class="material-icons-round part2-icon" style="color:#dc3545">warning</span> -->
+              <span class="part2-icon">4</span>
               <div class="flex-1">
                 <p class="font-semibold text-gray-800 text-sm">Naranasan mo na ba ang anumang uri ng pang-aabuso o karahasan?</p>
                 <p class="text-xs text-gray-400 mt-0.5">Have you experienced any form of abuse or violence?</p>
               </div>
-              <span class="deduction-badge deduction-high">−9 pts if Oo</span>
             </div>
             <div class="flex gap-3 mt-3">
               <div class="yn-btn" :class="{ active: p.violence === 'Oo' }" @click="p.violence = 'Oo'">Oo</div>
@@ -266,18 +267,18 @@
           <!-- 5. Age at first birth → DROPDOWN -->
           <div class="part2-card">
             <div class="part2-label">
-              <span class="material-icons-round part2-icon">cake</span>
+              <!-- <span class="material-icons-round part2-icon">cake</span> -->
+              <span class="part2-icon">5</span>
               <div class="flex-1">
                 <p class="font-semibold text-gray-800 text-sm">Ilang taong gulang ka noong ikaw ay naging ina?</p>
                 <p class="text-xs text-gray-400 mt-0.5">How old were you when you became a mother?</p>
               </div>
-              <span class="deduction-badge">Up to −5 pts</span>
             </div>
             <div class="field mt-3 mb-0">
               <select v-model="p.age" required>
                 <option value="" disabled hidden></option>
                 <option v-for="opt in ageOpts" :key="opt.value" :value="opt.value">
-                  {{ opt.label }} ({{ opt.pts }})
+                  {{ opt.label }}
                 </option>
               </select>
               <label class="floating-label"><span class="text-red-500 mr-0.5">*</span>Pumili ng edad</label>
@@ -287,12 +288,12 @@
           <!-- 6. Income source -->
           <div class="part2-card">
             <div class="part2-label">
-              <span class="material-icons-round part2-icon">payments</span>
+              <!-- <span class="material-icons-round part2-icon">payments</span> -->
+              <span class="part2-icon">6</span>
               <div class="flex-1">
                 <p class="font-semibold text-gray-800 text-sm">May pinagkukunan ka ba ng kita sa kasalukuyan?</p>
                 <p class="text-xs text-gray-400 mt-0.5">Do you currently have a source of income?</p>
               </div>
-              <span class="deduction-badge">−3 pts if Hindi</span>
             </div>
             <div class="flex gap-3 mt-3">
               <div class="yn-btn" :class="{ active: p.income_source === 'Oo' }" @click="p.income_source = 'Oo'">Oo</div>
@@ -303,12 +304,12 @@
           <!-- 7. Education/skills -->
           <div class="part2-card">
             <div class="part2-label">
-              <span class="material-icons-round part2-icon">school</span>
+              <!-- <span class="material-icons-round part2-icon">school</span> -->
+              <span class="part2-icon">7</span>
               <div class="flex-1">
                 <p class="font-semibold text-gray-800 text-sm">Natapos mo na ba ang iyong pag-aaral?</p>
                 <p class="text-xs text-gray-400 mt-0.5">Have you completed your education / skills training?</p>
               </div>
-              <span class="deduction-badge">−2 pts if Hindi</span>
             </div>
             <div class="flex gap-3 mt-3">
               <div class="yn-btn" :class="{ active: p.education_skills === 'Oo' }" @click="p.education_skills = 'Oo'">Oo</div>
@@ -354,7 +355,7 @@
           <p class="text-sm text-gray-500 mb-1">Respondent: <strong>{{ p.name }}</strong></p>
           <p class="text-sm text-gray-500 mb-4">Region: <strong>{{ p.region }}</strong> — {{ p.municipality_city }}, {{ p.barangay }}</p>
           <div class="bg-purple-50 border border-purple-200 rounded-xl p-3 text-xs text-purple-700 mb-5 text-left">
-            ℹ️ The assessment data and scores will be saved to the AMVAT spreadsheet. This action cannot be undone.
+            ℹ️ The assessment data and scores will be saved to the AMVAT database. This action cannot be undone.
           </div>
           <div class="flex gap-3">
             <button class="btn-secondary flex-1" @click="showConfirm = false">Wait, Go Back</button>
