@@ -68,9 +68,9 @@
     <div class="question-card mb-4">
       <p class="question-title"><span class="question-number-badge">7</span> Have any of the family members availed early childhood care and development services in the past 6 months? <span class="text-red-500">*</span></p>
       <div class="flex gap-3 mb-3">
-        <div class="option-item flex-1" :class="{ selected: eccdStatus === 'Yes' }" @click="eccdStatus = 'Yes'"><span class="opt-main">✓ YES</span></div>
-        <div class="option-item flex-1" :class="{ selected: eccdStatus === 'No' }" @click="eccdStatus = 'No'"><span class="opt-main">✗ NO</span></div>
-        <div class="option-item flex-1" :class="{ selected: eccdStatus === 'Not Applicable' }" @click="eccdStatus = 'Not Applicable'"><span class="opt-main">➖ NOT APPLICABLE</span></div>
+        <div class="option-item flex-1" :class="{ selected: eccdStatus === 'Yes' }" @click="eccdStatus = 'Yes'"><span class="opt-main">YES</span></div>
+        <div class="option-item flex-1" :class="{ selected: eccdStatus === 'No' }" @click="eccdStatus = 'No'"><span class="opt-main">NO</span></div>
+        <div class="option-item flex-1" :class="{ selected: eccdStatus === 'Not Applicable' }" @click="eccdStatus = 'Not Applicable'"><span class="opt-main">NOT APPLICABLE</span></div>
       </div>
       <!-- ECCD Services if Yes -->
       <div v-if="eccdStatus === 'Yes'" class="mt-3 border-t pt-3">
@@ -100,8 +100,8 @@
     <div class="question-card mb-4">
       <p class="question-title"><span class="question-number-badge">8</span> Do you practice any family planning methods? <span class="text-red-500">*</span></p>
       <div class="flex gap-3 mb-3">
-        <div class="option-item flex-1" :class="{ selected: f.family_planning === 'Yes' }" @click="f.family_planning = 'Yes'"><span class="opt-main">✓ YES (Proceed to question 9)</span></div>
-        <div class="option-item flex-1" :class="{ selected: f.family_planning === 'No' }" @click="f.family_planning = 'No'"><span class="opt-main">✗ NO (Proceed to question 10)</span></div>
+        <div class="option-item flex-1" :class="{ selected: f.family_planning === 'Yes' }" @click="f.family_planning = 'Yes'"><span class="opt-main">YES (Proceed to question 9)</span></div>
+        <div class="option-item flex-1" :class="{ selected: f.family_planning === 'No' }" @click="f.family_planning = 'No'"><span class="opt-main">NO (Proceed to question 10)</span></div>
       </div>
       <!-- FP Methods if Yes -->
       <div v-if="f.family_planning === 'Yes'" class="mt-3 border-t pt-3">
@@ -177,84 +177,84 @@ const f = reactive({
 })
 
 const yesNoOpts = [
-  { value: 'Yes', icon: '✓', main: 'YES', sub: '' },
-  { value: 'No',  icon: '✗', main: 'NO',  sub: '' },
+  { value: 'Yes', main: 'YES', sub: '' },
+  { value: 'No',  main: 'NO',  sub: '' },
 ]
 const healthConditionOpts = [
-  { value: 'Two or more family members got sick of an illness needing hospital confinement', icon: '🏥', main: 'Two or more family members – hospital confinement', sub: 'Multiple family members needed hospital care' },
-  { value: 'One family member got sick of an illness needing hospital confinement', icon: '🏥', main: 'One family member – hospital confinement', sub: 'Single family member needed hospital care' },
-  { value: 'Two or more family members got sick of an illness needing medical attention but did not need hospital confinement (diarrhea, high fever, etc.)', icon: '⚕️', main: 'Two or more family members – medical attention only', sub: 'Diarrhea, high fever, etc. but no hospitalization' },
-  { value: 'One family member got sick of an illness needing medical attention but did not need hospital confinement (diarrhea, high fever, etc.)', icon: '⚕️', main: 'One family member – medical attention only', sub: 'Diarrhea, high fever, etc. but no hospitalization' },
-  { value: 'No family member got sick of an illness needing medical attention or confinement (other than ordinary headaches, colds, etc.)', icon: '😊', main: 'No family member got sick', sub: 'Only ordinary headaches, colds, etc.' },
+  { value: 'Two or more family members got sick of an illness needing hospital confinement', main: 'Two or more family members – hospital confinement', sub: 'Multiple family members needed hospital care' },
+  { value: 'One family member got sick of an illness needing hospital confinement', main: 'One family member – hospital confinement', sub: 'Single family member needed hospital care' },
+  { value: 'Two or more family members got sick of an illness needing medical attention but did not need hospital confinement (diarrhea, high fever, etc.)', main: 'Two or more family members – medical attention only', sub: 'Diarrhea, high fever, etc. but no hospitalization' },
+  { value: 'One family member got sick of an illness needing medical attention but did not need hospital confinement (diarrhea, high fever, etc.)', main: 'One family member – medical attention only', sub: 'Diarrhea, high fever, etc. but no hospitalization' },
+  { value: 'No family member got sick of an illness needing medical attention or confinement (other than ordinary headaches, colds, etc.)', main: 'No family member got sick', sub: 'Only ordinary headaches, colds, etc.' },
 ]
 const healthServicesOpts = [
-  { value: 'No family member availed the health services provided in the community or other health facilities', icon: '🚫', main: 'No family member availed', sub: 'No one used health services' },
-  { value: 'At least one family member availed the health services provided in the community or other health facilities once.', icon: '✓', main: 'At least one member – availed once', sub: 'One family member used services once' },
-  { value: 'At least one family member has availed the health services provided in the community at least 3 times.', icon: '✓', main: 'At least one member – availed 3+ times', sub: 'One family member used services multiple times' },
-  { value: 'All family members have availed the health services provided in the community at least once.', icon: '✓', main: 'All family members – availed at least once', sub: 'Everyone used services at least once' },
+  { value: 'No family member availed the health services provided in the community or other health facilities', main: 'No family member availed', sub: 'No one used health services' },
+  { value: 'At least one family member availed the health services provided in the community or other health facilities once.', main: 'At least one member – availed once', sub: 'One family member used services once' },
+  { value: 'At least one family member has availed the health services provided in the community at least 3 times.', main: 'At least one member – availed 3+ times', sub: 'One family member used services multiple times' },
+  { value: 'All family members have availed the health services provided in the community at least once.', main: 'All family members – availed at least once', sub: 'Everyone used services at least once' },
 ]
 const giveBirthOpts = [
-  { value: 'Not Applicable', label: '➖ Not Applicable' },
-  { value: 'Own home', label: '🏠 Own home' },
-  { value: 'Other home', label: '🏡 Other home' },
-  { value: 'Government hospital', label: '🏥 Government hospital' },
-  { value: 'Rural/Urban health center/Public Lying Inn', label: '🏘️ Rural/Urban health center / Public Lying Inn' },
-  { value: 'Barangay Health Station', label: '⚕️ Barangay Health Station' },
-  { value: 'Private Hospital/Clinic/Lying Inn', label: '🏨 Private Hospital/Clinic/Lying Inn' },
-  { value: 'Industry-based Clinic', label: '🏭 Industry-based Clinic' },
-  { value: 'Others, specify', label: '📝 Others, specify' },
+  { value: 'Not Applicable', label: 'Not Applicable' },
+  { value: 'Own home', label: 'Own home' },
+  { value: 'Other home', label: 'Other home' },
+  { value: 'Government hospital', label: 'Government hospital' },
+  { value: 'Rural/Urban health center/Public Lying Inn', label: 'Rural/Urban health center / Public Lying Inn' },
+  { value: 'Barangay Health Station', label: 'Barangay Health Station' },
+  { value: 'Private Hospital/Clinic/Lying Inn', label: 'Private Hospital/Clinic/Lying Inn' },
+  { value: 'Industry-based Clinic', label: 'Industry-based Clinic' },
+  { value: 'Others, specify', label: 'Others, specify' },
 ]
 const prePostOpts = [
-  { value: 'Own home', label: '🏠 Own home' },
-  { value: 'Government hospital', label: '🏥 Government hospital' },
-  { value: 'Rural/Urban health center/Public Lying Inn', label: '🏘️ Rural/Urban health center / Public Lying Inn' },
-  { value: 'Barangay Health Station', label: '⚕️ Barangay Health Station' },
-  { value: 'Private Hospital/Clinic/Lying Inn', label: '🏨 Private Hospital/Clinic/Lying Inn' },
-  { value: 'Traditional healers i.e. hilot ', label: '🌿 Traditional healers i.e. hilot' },
-  { value: 'Others, specify', label: '📝 Others, specify' },
+  { value: 'Own home', label: 'Own home' },
+  { value: 'Government hospital', label: 'Government hospital' },
+  { value: 'Rural/Urban health center/Public Lying Inn', label: 'Rural/Urban health center / Public Lying Inn' },
+  { value: 'Barangay Health Station', label: 'Barangay Health Station' },
+  { value: 'Private Hospital/Clinic/Lying Inn', label: 'Private Hospital/Clinic/Lying Inn' },
+  { value: 'Traditional healers i.e. hilot ', label: 'Traditional healers i.e. hilot' },
+  { value: 'Others, specify', label: 'Others, specify' },
 ]
 const eccdServiceOpts = [
-  { value: 'Child Minding Services', label: '👶 Child Minding Services' },
-  { value: 'Day Care Services / ECCD', label: '🏫 Day Care Services / ECCD' },
-  { value: 'Supplementary Feeding', label: '🍽️ Supplementary Feeding' },
-  { value: 'Home-based program', label: '🏠 Home-based program (supervised neighborhood play, parent education, home visiting programs)' },
-  { value: 'School supplies', label: '✏️ School supplies' },
-  { value: 'Health and nutrition services', label: '⚕️ Health and nutrition services (deworming, dental/health check-up, provision of vitamins, etc.)' },
-  { value: 'Psychosocial intervention', label: '🧠 Psychosocial intervention' },
-  { value: 'Referral to health, education and social services', label: '🔗 Referral to health, education and social services' },
-  { value: 'Others', label: '📝 Others, specify' },
+  { value: 'Child Minding Services', label: 'Child Minding Services' },
+  { value: 'Day Care Services / ECCD', label: 'Day Care Services / ECCD' },
+  { value: 'Supplementary Feeding', label: 'Supplementary Feeding' },
+  { value: 'Home-based program', label: 'Home-based program (supervised neighborhood play, parent education, home visiting programs)' },
+  { value: 'School supplies', label: 'School supplies' },
+  { value: 'Health and nutrition services', label: 'Health and nutrition services (deworming, dental/health check-up, provision of vitamins, etc.)' },
+  { value: 'Psychosocial intervention', label: 'Psychosocial intervention' },
+  { value: 'Referral to health, education and social services', label: 'Referral to health, education and social services' },
+  { value: 'Others', label: 'Others, specify' },
 ]
 const eccdReasonOpts = [
-  { value: 'Inadequate ECCD facilities', label: '🏫 Inadequate ECCD facilities' },
-  { value: 'Inaccessible ECCD facilities', label: '🚫 Inaccessible ECCD facilities' },
-  { value: 'Against cultural belief or customary practices', label: '🌍 Against cultural belief or customary practices' },
-  { value: 'Inadequate school supplies', label: '✏️ Inadequate school supplies' },
-  { value: 'Poor client services', label: '⚠️ Poor client services were being offered, e.g., long queues, discourteous personnel, etc.' },
-  { value: 'Others', label: '📝 Others, specify' },
+  { value: 'Inadequate ECCD facilities', label: 'Inadequate ECCD facilities' },
+  { value: 'Inaccessible ECCD facilities', label: 'Inaccessible ECCD facilities' },
+  { value: 'Against cultural belief or customary practices', label: 'Against cultural belief or customary practices' },
+  { value: 'Inadequate school supplies', label: 'Inadequate school supplies' },
+  { value: 'Poor client services', label: 'Poor client services were being offered, e.g., long queues, discourteous personnel, etc.' },
+  { value: 'Others', label: 'Others, specify' },
 ]
 const fpMethodOpts = [
-  { value: 'Female Sterilization', label: '✂️ Female Sterilization' },
-  { value: 'Male Sterilization', label: '✂️ Male Sterilization' },
-  { value: 'Oral contraceptive pills', label: '💊 Oral contraceptive pills' },
-  { value: 'Implants', label: '📍 Implants' },
-  { value: 'Injectables', label: '💉 Injectables' },
-  { value: 'Vaginal rings', label: '⭕ Vaginal rings' },
-  { value: 'Intra- uterine devices', label: '🔧 Intra-uterine devices' },
-  { value: 'Condoms', label: '🔒 Condoms' },
-  { value: 'Withdrawal', label: '⏪ Withdrawal' },
-  { value: 'Calendar/Rhythm/Periodic Abstinence', label: '📅 Calendar/Rhythm/Periodic Abstinence' },
-  { value: 'Basal Body Temperature', label: '🌡️ Basal Body Temperature' },
-  { value: 'Others, specify', label: '📝 Other methods, specify' },
+  { value: 'Female Sterilization', label: 'Female Sterilization' },
+  { value: 'Male Sterilization', label: 'Male Sterilization' },
+  { value: 'Oral contraceptive pills', label: 'Oral contraceptive pills' },
+  { value: 'Implants', label: 'Implants' },
+  { value: 'Injectables', label: 'Injectables' },
+  { value: 'Vaginal rings', label: 'Vaginal rings' },
+  { value: 'Intra- uterine devices', label: 'Intra-uterine devices' },
+  { value: 'Condoms', label: 'Condoms' },
+  { value: 'Withdrawal', label: 'Withdrawal' },
+  { value: 'Calendar/Rhythm/Periodic Abstinence', label: 'Calendar/Rhythm/Periodic Abstinence' },
+  { value: 'Basal Body Temperature', label: 'Basal Body Temperature' },
+  { value: 'Others, specify', label: 'Other methods, specify' },
 ]
 const fpReasonOpts = [
-  { value: 'Planning to have a baby', label: '👶 Planning to have a baby' },
-  { value: 'Lack of information', label: '❓ Lack of information' },
-  { value: 'Opposition by partners or families', label: '❌ Opposition by partners or families' },
-  { value: 'Opposition by community tribal leaders', label: '🚫 Opposition by community tribal leaders' },
-  { value: 'Against cultural belief or customary practices', label: '🌍 Against cultural belief or customary practices' },
-  { value: 'Discomfort in the use of barriers during sexual act', label: '⚠️ Discomfort in the use of barriers during sexual act' },
-  { value: 'Risk of producing an unwanted pregnancy adds flavor to the sexual act', label: '⚠️ Risk of producing an unwanted pregnancy adds flavor to the sexual act' },
-  { value: 'Others, specify', label: '📝 Others, specify' },
+  { value: 'Planning to have a baby', label: 'Planning to have a baby' },
+  { value: 'Lack of information', label: 'Lack of information' },
+  { value: 'Opposition by partners or families', label: 'Opposition by partners or families' },
+  { value: 'Opposition by community tribal leaders', label: 'Opposition by community tribal leaders' },
+  { value: 'Against cultural belief or customary practices', label: 'Against cultural belief or customary practices' },
+  { value: 'Discomfort in the use of barriers during sexual act', label: 'Discomfort in the use of barriers during sexual act' },
+  { value: 'Risk of producing an unwanted pregnancy adds flavor to the sexual act', label: 'Risk of producing an unwanted pregnancy adds flavor to the sexual act' },
+  { value: 'Others, specify', label: 'Others, specify' },
 ]
 
 function buildChildhoodCare() {
