@@ -89,8 +89,8 @@
     </transition>
 
     <div class="flex justify-between mt-6">
-      <button class="btn-secondary" @click="store.setProfilingStep(1)">← Back</button>
-      <button class="btn-primary" @click="handleNext">Next →</button>
+      <button class="btn-secondary" @click="store.setProfilingStep(1)">Back</button>
+      <button class="btn-primary" @click="handleNext">Next</button>
     </div>
   </div>
 </template>
