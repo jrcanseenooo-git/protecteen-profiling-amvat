@@ -307,11 +307,11 @@ const target = ref(1000)
 const REGION_KEYS = ['III','VI','X','NCR','IV-A']
 
 const REGIONS = [
+  { name: 'NCR',  label: 'NCR',         location: 'National Capital Region',                   target: 200 },
   { name: 'III',  label: 'Region III',  location: 'City of San Jose Del Monte, Bulacan',      target: 200 },
+  { name: 'IV-A', label: 'Region IV-A', location: 'CALABARZON',                               target: 200 },
   { name: 'VI',   label: 'Region VI',   location: 'City of Iloilo, Iloilo',                   target: 200 },
   { name: 'X',    label: 'Region X',    location: 'City of Cagayan De Oro, Misamis Oriental',  target: 200 },
-  { name: 'NCR',  label: 'NCR',         location: 'National Capital Region',                   target: 200 },
-  { name: 'IV-A', label: 'Region IV-A', location: 'CALABARZON',                               target: 200 },
 ]
 
 const scoreBands = [
