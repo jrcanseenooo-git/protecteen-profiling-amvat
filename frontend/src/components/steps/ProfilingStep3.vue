@@ -131,8 +131,8 @@
       <div v-if="alertMsg" class="bg-yellow-50 border border-yellow-300 text-yellow-800 rounded-xl p-4 mb-4 text-sm">⚠️ {{ alertMsg }}</div>
     </transition>
     <div class="flex justify-between mt-6">
-      <button class="btn-secondary" @click="store.setProfilingStep(2)">← Back</button>
-      <button class="btn-primary" @click="handleNext">Next →</button>
+      <button class="btn-secondary" @click="store.setProfilingStep(2)">Back</button>
+      <button class="btn-primary" @click="handleNext">Next</button>
     </div>
   </div>
 </template>
