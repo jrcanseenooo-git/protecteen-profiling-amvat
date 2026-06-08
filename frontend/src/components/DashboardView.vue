@@ -4,7 +4,7 @@
     <!-- ── Header ── -->
     <div class="flex items-center justify-between mb-6">
       <div>
-        <h1 class="text-2xl font-bold text-primary">ProtecTEEN Dashboard</h1>
+        <h1 class="text-2xl font-bold text-primary">Dashboard</h1>
         <p class="text-sm text-gray-500 mt-0.5">Real-time profiling &amp; AMVAT tracking</p>
       </div>
       <div class="flex items-center gap-2">
@@ -114,7 +114,7 @@
     <div v-if="loading && !rawData.profiling" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
       <div v-for="i in 4" :key="i" class="bg-white rounded-xl p-4 shadow-card animate-pulse h-24"></div>
     </div>
-    <div v-else class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <!-- <div v-else class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
       <div class="bg-white rounded-xl p-4 shadow-card border-t-4 text-center" style="border-color:#7c3aed">
         <p class="text-3xl font-black" style="color:#7c3aed">{{ totals.profiled }}</p>
         <p class="text-xs text-gray-500 mt-1 font-medium">Total Profiled</p>
@@ -131,7 +131,7 @@
         <p class="text-3xl font-black text-success">{{ totals.eligible }}</p>
         <p class="text-xs text-gray-500 mt-1 font-medium">Total Eligible</p>
       </div>
-    </div>
+    </div> -->
 
     <!-- ══════════════════════════════════════
          OVERVIEW CHART (All Regions only)
@@ -174,7 +174,7 @@
       </div>
 
       <!-- Target progress bar -->
-      <div class="mt-5 pt-4 border-t border-gray-100">
+      <!-- <div class="mt-5 pt-4 border-t border-gray-100">
         <div class="flex justify-between text-xs text-gray-500 mb-1.5">
           <span class="font-semibold text-gray-700">Target: {{ target }} respondents</span>
           <span class="font-bold" style="color:#7c3aed">{{ pct(totals.profiled, target) }}% reached</span>
@@ -184,7 +184,7 @@
                :style="{ width: Math.min(100, pct(totals.profiled, target)) + '%', background: '#7c3aed' }"></div>
         </div>
         <p class="text-[10px] text-gray-400 mt-1">{{ totals.profiled }} profiled of {{ target }} target</p>
-      </div>
+      </div> -->
     </div>
 
     <!-- ══════════════════════════════════════
@@ -263,7 +263,7 @@
           </div>
 
           <!-- Target bar -->
-          <div class="mt-3">
+          <!-- <div class="mt-3">
             <div class="flex justify-between text-[10px] text-gray-400 mb-1">
               <span>Target: {{ region.target }}</span>
               <span style="color:#7c3aed">{{ pct(region.profiled, region.target) }}%</span>
@@ -272,7 +272,7 @@
               <div class="h-full rounded-full"
                    :style="{ width: Math.min(100, pct(region.profiled, region.target)) + '%', background: '#7c3aed' }"></div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
