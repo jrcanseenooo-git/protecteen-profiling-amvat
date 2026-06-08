@@ -1,6 +1,6 @@
 <template>
   <div class="card fade-in">
-    <h2 class="text-center mb-1">ProtecTEEN Profiling Tool</h2>
+    <h2 class="text-center mb-1">Profiling Tool</h2>
     <h3 class="text-center text-gray-600 mb-6 font-semibold text-base">RESPONDENT'S PROFILE</h3>
 
     <!-- Program Participation -->
@@ -332,7 +332,7 @@
 
     <div class="flex justify-end mt-2">
       <button class="btn-primary px-8" @click="handleNext">
-        NEXT <span class="ml-2">→</span>
+        NEXT
       </button>
     </div>
   </div>
