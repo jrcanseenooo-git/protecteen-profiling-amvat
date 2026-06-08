@@ -1,6 +1,3 @@
-// src/composables/useAmvatQuestions.js
-// EXACT question text from the original AMVAT app
-
 export const LIKERT_OPTS = [
   { val: 1, label: 'Lubos na Hindi' },
   { val: 2, label: 'Hindi Sumasang-ayon' },
