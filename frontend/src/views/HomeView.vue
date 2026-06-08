@@ -6,8 +6,8 @@
       <!-- Top brand bar -->
       <div class="rounded-2xl px-6 py-4 mb-3 flex items-center justify-between shadow-card" style="background:#7c3aed;">
         <div>
-          <h1 class="text-white text-xl font-black tracking-tight">ProtecTEEN</h1>
-          <p class="text-white/70 text-xs mt-0.5">Unified Profiling &amp; Assessment System</p>
+          <h1 class="text-white text-xl font-black tracking-tight">PROTECTEEN TOOL</h1>
+          <p class="text-white/70 text-xs mt-0.5">Profiling &amp; Adolescent Mother Vulnerability Assessment Tool</p>
         </div>
         <div class="flex gap-2">
           <button @click="activeTab = 'form'"
