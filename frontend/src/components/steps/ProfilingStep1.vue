@@ -7,7 +7,7 @@
     <div class="section-card mb-6">
       <h4 class="section-card-title">Program Participation</h4>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6">
-        <div class="field">
+        <div :class="['field', f.fourPs ? 'has-value' : '']">
           <select v-model="f.fourPs" required>
             <option value="" disabled hidden></option>
             <option value="Yes">YES</option>
@@ -15,7 +15,7 @@
           </select>
           <label class="floating-label"><span class="text-red-500">*</span> Pantawid Member?</label>
         </div>
-        <div class="field">
+        <div :class="['field', f.slp ? 'has-value' : '']">
           <select v-model="f.slp" required>
             <option value="" disabled hidden></option>
             <option value="Yes">YES</option>
@@ -28,7 +28,7 @@
           <input v-model="f.household_number" type="text"
             pattern="[0-9]*" inputmode="numeric" placeholder=" "
             @input="f.household_number = f.household_number.replace(/[^0-9]/g,'')" />
-          <label class="floating-label">Household Number (e.g. 00001)</label>
+          <label class="floating-label">Household Number</label>
         </div>
       </div>
     </div>
@@ -58,9 +58,9 @@
         <!-- Sex is auto-set to Female since respondents are all female -->
         <div class="field">
           <input value="Female" type="text" disabled />
-          <label class="floating-label" style="top:-14px;font-size:12px;color:#7c3aed;">Sex (Respondents are Female)</label>
+          <label class="floating-label" style="top:-14px;font-size:12px;color:#7c3aed;">Sex</label>
         </div>
-        <div class="field">
+        <div :class="['field', f.ip_membership ? 'has-value' : '']">
           <select v-model="f.ip_membership" @change="onIPChange" required>
             <option value="" disabled hidden></option>
             <option value="Non-IP">Non-IP</option>
@@ -103,10 +103,10 @@
             maxlength="11" placeholder=" "
             @input="validateContact"
             :class="contactError ? 'border-b-danger' : ''" required />
-          <label class="floating-label"><span class="text-red-500">*</span> Contact Number (09XXXXXXXXX)</label>
+          <label class="floating-label"><span class="text-red-500">*</span> Contact Number</label>
           <p v-if="contactError" class="text-xs text-danger mt-1">{{ contactError }}</p>
         </div>
-        <div class="field">
+        <div :class="['field', f.civil_status ? 'has-value' : '']">
           <select v-model="f.civil_status" required>
             <option value="" disabled hidden></option>
             <option value="Single">SINGLE</option>
@@ -172,7 +172,7 @@
     <div class="section-card mb-6">
       <h4 class="section-card-title">Family Information</h4>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-        <div class="field">
+        <div :class="['field', f.family_head ? 'has-value' : '']">
           <select v-model="f.family_head" required>
             <option value="" disabled hidden></option>
             <option value="Yes">YES</option>
@@ -180,7 +180,7 @@
           </select>
           <label class="floating-label"><span class="text-red-500">*</span> Head of the Family?</label>
         </div>
-        <div class="field">
+        <div :class="['field', f.has_child ? 'has-value' : '']">
           <select v-model="f.has_child" @change="onHasChildChange" required>
             <option value="" disabled hidden></option>
             <option value="Yes">YES</option>
@@ -194,7 +194,7 @@
             placeholder=" " required
             :disabled="f.has_child === 'No'"
             @input="clampChildren" />
-          <label class="floating-label"><span class="text-red-500">*</span> Number of Children (min. 1)</label>
+          <label class="floating-label"><span class="text-red-500">*</span> Number of Children</label>
         </div>
         <div class="field mt-4">
           <select v-model="f.with_partner" required>
@@ -210,7 +210,7 @@
     <!-- Education & Employment -->
     <div class="section-card mb-6">
       <h4 class="section-card-title">Education &amp; Employment</h4>
-      <div class="field">
+      <div :class="['field', f.education ? 'has-value' : '']">
         <select v-model="f.education" required>
           <option value="" disabled hidden></option>
           <option value="Without Formal Education">Without Formal Education</option>
@@ -273,7 +273,7 @@
     <div class="section-card mb-6">
       <h4 class="section-card-title">Health Information</h4>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-        <div class="field">
+        <div :class="['field', f.disability_special ? 'has-value' : '']">
           <select v-model="f.disability_special" required>
             <option value="" disabled hidden></option>
             <option value="None">None</option>
@@ -290,7 +290,7 @@
           </select>
           <label class="floating-label"><span class="text-red-500">*</span> Disability/Special Needs</label>
         </div>
-        <div class="field">
+        <div :class="['field', f.critical_illness ? 'has-value' : '']">
           <select v-model="f.critical_illness" @change="onCriticalIllnessChange" required>
             <option value="" disabled hidden></option>
             <option value="None">None</option>
@@ -315,10 +315,10 @@
 
     <!-- Smart age preview -->
     <div v-if="agePreview > 0" class="bg-purple-50 border border-purple-200 rounded-xl px-5 py-3 mb-4 text-sm flex items-center gap-3">
-      <span class="text-2xl">🎂</span>
+      <!-- <span class="text-2xl">🎂</span> -->
       <div>
         <span class="font-semibold text-primary">Age: {{ agePreview }} years old</span>
-        <span v-if="agePreview > 19" class="ml-2 text-danger text-xs font-medium">⚠️ Over 19 — may not qualify</span>
+        <span v-if="agePreview > 19" class="ml-2 text-danger text-xs font-medium">⚠️ Over 19 - may not qualify</span>
         <span v-else class="ml-2 text-success text-xs font-medium">✓ Within age range</span>
       </div>
     </div>
@@ -355,7 +355,7 @@ const otherErrors = reactive({
 
 const f = reactive({
   ...store.profilingData,
-  sex: 'Female', // Always Female — respondents are all female
+  sex: 'Female', // Always Female - respondents are all female
   ip_other: '',
   religion_other: '',
   occupation_other: '',
@@ -403,14 +403,14 @@ const REQUIRED = [
 function handleNext() {
   alertMsg.value = ''
 
-  // Validate and resolve Others — mark errors inline
+  // Validate and resolve Others - mark errors inline
   otherErrors.ip         = f.ip_membership === 'Others' && !f.ip_other?.trim()
   otherErrors.religion   = f.religion === 'Other' && !f.religion_other?.trim()
   otherErrors.occupation = f.occupation === 'Other' && !f.occupation_other?.trim()
   otherErrors.illness    = f.critical_illness === 'Other' && !f.critical_illness_other?.trim()
 
   if (Object.values(otherErrors).some(v => v)) {
-    alertMsg.value = 'Please fill in all "Others — Please specify" fields.'
+    alertMsg.value = 'Please fill in all "Others - Please specify" fields.'
     return
   }
 
