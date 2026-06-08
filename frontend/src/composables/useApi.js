@@ -22,17 +22,13 @@ async function post(action, data = {}) {
 }
 
 export function useApi() {
-  const getLocationDB    = ()           => get('getLocationDB')
-  const getDashboard     = ()           => get('getDashboard')
-  const submitProfiling  = (formData)   => post('submitProfiling', formData)
-  const submitNotQualified=(formData)   => post('submitNotQualified', formData)
-  const submitAMVAT      = (data)       => post('submitAMVAT', data)
-  const searchProfiling  = (searchTerm) => post('searchProfiling', searchTerm)
-  const searchAMVAT      = (q) => {
-    const url = new URL(GAS_URL)
-    url.searchParams.set('action', 'searchAMVAT')
-    url.searchParams.set('q', q)
-    return fetch(url.toString(), { redirect: 'follow' }).then(r => r.json())
-  }
+  const getLocationDB      = ()           => get('getLocationDB')
+  const getDashboard       = ()           => get('getDashboard')
+  const submitProfiling    = (formData)   => post('submitProfiling', formData)
+  const submitNotQualified = (formData)   => post('submitNotQualified', formData)
+  const submitAMVAT        = (data)       => post('submitAMVAT', data)
+  // Search via GET so the query string is sent cleanly
+  const searchProfiling    = (q)          => get('searchProfiling',  { q })
+  const searchAMVAT        = (q)          => get('searchAMVAT',      { q })
   return { getLocationDB, getDashboard, submitProfiling, submitNotQualified, submitAMVAT, searchProfiling, searchAMVAT }
 }
