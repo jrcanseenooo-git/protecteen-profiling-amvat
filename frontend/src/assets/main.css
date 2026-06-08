@@ -35,19 +35,29 @@
 
   .floating-label {
     @apply absolute top-2.5 left-0 text-sm pointer-events-none transition-all duration-200;
-    color: #9ca3af; /* gray-400 — looks like a placeholder */
+    color: #9ca3af;
   }
+  /* Float label up when: input focused, input has value, select focused */
   .field input:focus    ~ .floating-label,
   .field input:not(:placeholder-shown) ~ .floating-label,
   .field select:focus   ~ .floating-label,
-  .field select:valid   ~ .floating-label {
-    @apply -top-4 text-xs font-medium;
-    color: #7c3aed; /* purple when active/filled */
+  .field.has-value      > .floating-label {
+    top: -16px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #7c3aed;
+  }
+  /* CSS :has() — float label when select has a non-empty value (modern browsers) */
+  .field:has(select option:checked:not([value=""]):not([disabled])) > .floating-label {
+    top: -16px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #7c3aed;
   }
 
   /* Actual input placeholder text also gray */
   .field input::placeholder { color: #9ca3af; }
-  .field select option:first-child { color: #9ca3af; }
+  .field select option[disabled] { color: #9ca3af; }
 
   /* ── Buttons ── */
   .btn {
@@ -135,22 +145,36 @@
   .opt-sub  { @apply text-xs mt-0.5; color: #8b5cf6; }
 
   /* ── Likert rating ── */
-  .rating-group   { @apply flex gap-2 mt-3; }
-  .rating-option  { @apply flex-1; }
+  .rating-group  { @apply flex gap-1.5 mt-3; }
+  .rating-option { flex: 1; min-width: 0; }
   .rating-option input[type="radio"] { @apply hidden; }
   .rating-label {
-    @apply flex flex-col items-center p-2 rounded-xl border-2 cursor-pointer transition-all text-center w-full;
-    border-color: #e5e7eb;
+    @apply flex flex-col items-center justify-start cursor-pointer transition-all text-center w-full;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 8px 4px;
+    min-height: 60px;
     color: #4c1d95;
   }
   .rating-label:hover { border-color: #7c3aed; background: #f5f3ff; }
   .rating-option input:checked + .rating-label {
-    @apply text-white;
     border-color: #7c3aed;
     background: #7c3aed;
+    color: #fff;
   }
-  .rating-value { @apply text-lg font-bold; }
-  .rating-text  { @apply text-[10px] font-medium mt-0.5 leading-tight; }
+  .rating-value {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .rating-text {
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.3;
+    word-break: break-word;
+    hyphens: auto;
+  }
 
   /* ── Checkbox group ── */
   .check-group { @apply grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2; }
