@@ -3,99 +3,144 @@
 @tailwind utilities;
 
 @layer base {
-  body { @apply font-sans bg-gray-100 text-gray-800 min-h-screen; }
+  body { @apply font-sans min-h-screen; background: #f5f3ff; color: #1e1b4b; }
   h2   { @apply text-2xl font-semibold text-primary; }
-  h3   { @apply text-lg font-medium text-gray-600; }
+  h3   { @apply text-lg font-medium; color: #4c1d95; }
 }
 
 @layer components {
   /* ── Card ── */
   .card {
-    @apply bg-white rounded-xl shadow-card p-6 md:p-10 w-full max-w-3xl mx-auto;
+    @apply bg-white rounded-2xl shadow-card p-6 md:p-10 w-full max-w-3xl mx-auto;
   }
 
   /* ── Floating label input ── */
   .field { @apply relative mb-6; }
   .field input,
   .field select {
-    @apply w-full border-0 border-b-2 border-gray-300 bg-transparent text-sm
-           py-2.5 focus:outline-none focus:border-primary transition-colors;
+    @apply w-full border-0 border-b-2 bg-transparent text-sm
+           py-2.5 focus:outline-none transition-colors;
+    border-color: #c4b5fd;
+    color: #1e1b4b;
+  }
+  .field input:focus,
+  .field select:focus {
+    border-color: #7c3aed;
   }
   .field input:disabled,
   .field select:disabled { @apply opacity-40 cursor-not-allowed; }
 
   .floating-label {
-    @apply absolute top-2.5 left-0 text-gray-400 text-sm pointer-events-none
-           transition-all duration-200;
+    @apply absolute top-2.5 left-0 text-sm pointer-events-none transition-all duration-200;
+    color: #8b5cf6;
   }
   .field input:focus    ~ .floating-label,
   .field input:not(:placeholder-shown) ~ .floating-label,
   .field select:focus   ~ .floating-label,
   .field select:valid   ~ .floating-label {
-    @apply -top-4 text-xs text-primary;
+    @apply -top-4 text-xs;
+    color: #7c3aed;
   }
 
   /* ── Buttons ── */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg
-           font-medium text-sm transition-all duration-200 cursor-pointer
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+           font-semibold text-sm transition-all duration-200 cursor-pointer
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-primary {
-    @apply btn bg-primary text-white hover:bg-primary-dark shadow-sm
-           hover:shadow-md active:scale-95;
+    @apply btn text-white shadow-sm hover:shadow-md active:scale-95;
+    background: #7c3aed;
   }
+  .btn-primary:hover { background: #5b21b6; }
+
   .btn-secondary {
-    @apply btn bg-gray-200 text-gray-700 hover:bg-gray-300;
+    @apply btn text-gray-600;
+    background: #f3f4f6;
   }
+  .btn-secondary:hover { background: #e5e7eb; }
+
   .btn-success {
-    @apply btn bg-success text-white hover:opacity-90;
+    @apply btn bg-success text-white;
   }
+  .btn-success:hover { @apply opacity-90; }
+
   .btn-warning {
-    @apply btn bg-warning text-white hover:opacity-90;
+    @apply btn bg-warning text-white;
   }
+  .btn-warning:hover { @apply opacity-90; }
+
   .btn-amvat {
-    @apply btn bg-amvat text-white hover:opacity-90 shadow-sm hover:shadow-md;
+    @apply btn text-white shadow-sm active:scale-95;
+    background: #6d28d9;
   }
+  .btn-amvat:hover { background: #5b21b6; }
+
   .btn-danger {
-    @apply btn bg-danger text-white hover:opacity-90;
+    @apply btn bg-danger text-white;
   }
+  .btn-danger:hover { @apply opacity-90; }
 
   /* ── Section header ── */
   .section-title {
-    @apply bg-gradient-to-r from-secondary to-accent text-white
-           px-5 py-3 rounded-lg text-sm font-medium my-5;
+    @apply text-white px-5 py-3 rounded-xl text-sm font-semibold my-5;
+    background: #7c3aed;
+  }
+
+  /* ── Question number badge ── */
+  .question-number-badge {
+    @apply inline-flex items-center justify-center w-7 h-7 rounded-full text-white text-xs font-bold shrink-0;
+    background: #7c3aed;
   }
 
   /* ── Progress breadcrumb ── */
-  .breadcrumb { @apply flex flex-wrap items-center gap-1 text-xs mb-6; }
+  .breadcrumb {
+    @apply flex items-center gap-1 text-xs mb-6 overflow-x-auto pb-1;
+    scrollbar-width: none;
+  }
+  .breadcrumb::-webkit-scrollbar { display: none; }
   .breadcrumb-item {
-    @apply px-3 py-1 rounded-full bg-gray-200 text-gray-500 font-medium;
+    @apply px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all shrink-0;
+    background: #ede9fe; color: #7c3aed;
   }
-  .breadcrumb-item.active  { @apply bg-primary text-white; }
-  .breadcrumb-item.done    { @apply bg-success text-white; }
-  .breadcrumb-sep          { @apply text-gray-400; }
+  .breadcrumb-item.active { @apply text-white shadow-sm; background: #7c3aed; }
+  .breadcrumb-item.done   { @apply text-white; background: #059669; }
+  .breadcrumb-sep         { @apply shrink-0 font-bold; color: #c4b5fd; }
 
-  /* ── Question card ── */
-  .q-card {
-    @apply bg-white border border-gray-200 rounded-xl p-5 mb-4
-           shadow-sm hover:shadow-md transition-shadow;
+  /* ── Question card (housing/health steps) ── */
+  .question-card {
+    @apply bg-white border rounded-2xl p-5 shadow-sm;
+    border-color: #ede9fe;
   }
-  .q-number {
-    @apply inline-flex items-center justify-center w-7 h-7 rounded-full
-           bg-primary text-white text-xs font-bold mr-2 shrink-0;
+  .question-title {
+    @apply font-semibold text-sm mb-3 flex items-start gap-2;
+    color: #4c1d95;
   }
+
+  /* ── Option item (card selector) ── */
+  .option-item {
+    @apply border-2 rounded-xl p-3 cursor-pointer transition-all flex flex-col;
+    border-color: #e5e7eb;
+  }
+  .option-item:hover   { border-color: #7c3aed; background: #f5f3ff; }
+  .option-item.selected { border-color: #7c3aed; background: #ede9fe; }
+  .opt-main { @apply font-medium text-sm; color: #1e1b4b; }
+  .opt-sub  { @apply text-xs mt-0.5; color: #8b5cf6; }
 
   /* ── Likert rating ── */
-  .rating-group { @apply flex flex-wrap gap-2 mt-3; }
+  .rating-group   { @apply flex gap-2 mt-3; }
+  .rating-option  { @apply flex-1; }
   .rating-option input[type="radio"] { @apply hidden; }
   .rating-label {
-    @apply flex flex-col items-center p-2 rounded-lg border-2 border-gray-200
-           cursor-pointer transition-all text-center min-w-[70px]
-           hover:border-primary hover:bg-blue-50;
+    @apply flex flex-col items-center p-2 rounded-xl border-2 cursor-pointer transition-all text-center w-full;
+    border-color: #e5e7eb;
+    color: #4c1d95;
   }
+  .rating-label:hover { border-color: #7c3aed; background: #f5f3ff; }
   .rating-option input:checked + .rating-label {
-    @apply border-primary bg-primary text-white;
+    @apply text-white;
+    border-color: #7c3aed;
+    background: #7c3aed;
   }
   .rating-value { @apply text-lg font-bold; }
   .rating-text  { @apply text-[10px] font-medium mt-0.5 leading-tight; }
@@ -103,53 +148,43 @@
   /* ── Checkbox group ── */
   .check-group { @apply grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2; }
   .check-item {
-    @apply flex items-center gap-2 p-2 rounded-lg border border-gray-200
-           cursor-pointer hover:bg-blue-50 hover:border-primary transition-all;
+    @apply flex items-center gap-2 p-2 rounded-xl border cursor-pointer transition-all;
+    border-color: #e5e7eb;
   }
-  .check-item input[type="checkbox"] { @apply accent-primary; }
+  .check-item:hover { background: #f5f3ff; border-color: #7c3aed; }
+  .check-item input[type="checkbox"] { accent-color: #7c3aed; }
 
   /* ── Alert / qualification box ── */
-  .alert-qualified    { @apply bg-success-light border-2 border-success text-green-800 rounded-xl p-5; }
-  .alert-not-qualified { @apply bg-danger-light border-2 border-danger text-red-800 rounded-xl p-5; }
+  .alert-qualified     { @apply border-2 rounded-xl p-5; background: #d1fae5; border-color: #059669; color: #065f46; }
+  .alert-not-qualified { @apply border-2 rounded-xl p-5; background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
 
   /* ── Score card ── */
-  .score-card {
-    @apply p-4 rounded-xl border-l-4 bg-gray-50 mb-4;
-  }
+  .score-card { @apply p-4 rounded-xl border-l-4 mb-4; background: #f5f3ff; }
 
   /* ── Loading overlay ── */
-  .loading-overlay {
-    @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50;
-  }
-  .spinner {
-    @apply w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin;
-  }
+  .loading-overlay { @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50; }
+  .spinner { @apply w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin; }
 
   /* ── Modal ── */
-  .modal-overlay {
-    @apply fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4;
-  }
-  .modal-box {
-    @apply bg-white rounded-2xl shadow-modal w-full max-w-2xl max-h-[90vh] overflow-y-auto;
-  }
-  .modal-header {
-    @apply bg-gradient-to-r from-primary to-secondary text-white px-6 py-4
-           rounded-t-2xl flex items-center justify-between sticky top-0 z-10;
+  .modal-overlay { @apply fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4; }
+  .modal-box     { @apply bg-white rounded-2xl shadow-modal w-full max-w-2xl max-h-[90vh] overflow-y-auto; }
+  .modal-header  {
+    @apply text-white px-6 py-4 rounded-t-2xl flex items-center justify-between sticky top-0 z-10;
+    background: #7c3aed;
   }
 
   /* ── Custom alert ── */
-  .custom-alert-overlay {
-    @apply fixed inset-0 bg-black/50 flex items-center justify-center z-[100];
-  }
-  .custom-alert-box {
-    @apply bg-white rounded-2xl shadow-modal p-8 max-w-sm w-full mx-4 text-center
-           animate-bounce-in;
-  }
+  .custom-alert-overlay { @apply fixed inset-0 bg-black/50 flex items-center justify-center z-[100]; }
+  .custom-alert-box     { @apply bg-white rounded-2xl shadow-modal p-8 max-w-sm w-full mx-4 text-center; }
+
+  /* ── Material Icons helpers ── */
+  .step-icon { font-size: 20px !important; vertical-align: -5px; margin-right: 6px; color: #7c3aed; }
+  .mi-btn    { font-size: 18px !important; vertical-align: -4px; margin-right: 4px; }
 }
 
 /* Animations */
-@keyframes fadeIn  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @keyframes bounceIn { 0% { transform: scale(.8); opacity: 0; } 70% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
-.fade-in    { animation: fadeIn .35s ease both; }
-.bounce-in  { animation: bounceIn .4s ease both; }
-.hidden     { display: none !important; }
+.fade-in   { animation: fadeIn .35s ease both; }
+.bounce-in { animation: bounceIn .4s ease both; }
+.hidden    { display: none !important; }

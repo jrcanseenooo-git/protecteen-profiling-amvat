@@ -2,49 +2,75 @@
   <div class="max-w-3xl mx-auto">
 
     <!-- ── Header ── -->
-    <div class="text-center mb-6">
-      <h1 class="text-2xl md:text-3xl font-bold text-primary">ProtecTEEN</h1>
-      <p class="text-sm text-gray-500 mt-1">Unified Profiling &amp; Assessment System</p>
-      <!-- Section pill -->
-      <div class="flex justify-center gap-2 mt-3">
-        <span :class="store.section === 'profiling'
-          ? 'bg-primary text-white'
-          : 'bg-gray-200 text-gray-500'"
-          class="px-4 py-1 rounded-full text-xs font-semibold transition-all">
-          📋 Profiling
-        </span>
-        <span class="text-gray-400 text-xs self-center">→</span>
-        <span :class="store.section === 'amvat'
-          ? 'bg-amvat text-white'
-          : 'bg-gray-200 text-gray-500'"
-          class="px-4 py-1 rounded-full text-xs font-semibold transition-all">
-          📊 AMVAT Assessment
-        </span>
-        <span class="text-gray-400 text-xs self-center">→</span>
-        <span :class="store.section === 'results'
-          ? 'bg-success text-white'
-          : 'bg-gray-200 text-gray-500'"
-          class="px-4 py-1 rounded-full text-xs font-semibold transition-all">
-          ✅ Results
-        </span>
+    <div class="mb-5">
+      <!-- Top brand bar -->
+      <div class="rounded-2xl px-6 py-4 mb-3 flex items-center justify-between shadow-card" style="background:#7c3aed;">
+        <div>
+          <h1 class="text-white text-xl font-black tracking-tight">ProtecTEEN</h1>
+          <p class="text-white/70 text-xs mt-0.5">Unified Profiling &amp; Assessment System</p>
+        </div>
+        <div class="flex gap-2">
+          <button @click="activeTab = 'form'"
+            :class="activeTab === 'form' ? 'bg-white text-primary' : 'bg-white/20 text-white'"
+            class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all hover:bg-white hover:text-primary">
+            <span class="material-icons-round" style="font-size:16px;vertical-align:-3px;margin-right:4px">edit_note</span>Data Entry
+          </button>
+          <button @click="activeTab = 'dashboard'"
+            :class="activeTab === 'dashboard' ? 'bg-white text-primary' : 'bg-white/20 text-white'"
+            class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all hover:bg-white hover:text-primary">
+            <span class="material-icons-round" style="font-size:16px;vertical-align:-3px;margin-right:4px">bar_chart</span>Dashboard
+          </button>
+        </div>
+      </div>
+
+      <!-- Section progress (only on form tab) -->
+      <div v-if="activeTab === 'form'" class="flex items-center bg-white rounded-xl px-4 py-2.5 shadow-sm border border-gray-100">
+        <div class="flex items-center flex-1 gap-1">
+          <div class="flex items-center gap-1.5"
+               :class="store.section === 'profiling' ? 'opacity-100' : store.section !== 'profiling' && store.section !== 'amvat' ? 'opacity-40' : 'opacity-60'">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                 :class="store.section !== 'profiling' ? 'text-white bg-success' : 'bg-primary text-white'">
+              {{ store.section !== 'profiling' ? '✓' : '1' }}
+            </div>
+            <span class="text-xs font-semibold" :class="store.section === 'profiling' ? 'text-primary' : 'text-gray-400'">Profiling</span>
+          </div>
+          <div class="flex-1 h-0.5 mx-2 rounded" :class="store.section !== 'profiling' ? 'bg-success' : 'bg-gray-200'"></div>
+          <div class="flex items-center gap-1.5"
+               :class="store.section === 'amvat' ? 'opacity-100' : store.section === 'results' ? 'opacity-60' : 'opacity-40'">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                 :class="store.section === 'results' ? 'text-white bg-success' : store.section === 'amvat' ? 'bg-amvat text-white' : 'bg-gray-200 text-gray-400'">
+              {{ store.section === 'results' ? '✓' : '2' }}
+            </div>
+            <span class="text-xs font-semibold" :class="store.section === 'amvat' ? 'text-amvat' : 'text-gray-400'">AMVAT</span>
+          </div>
+          <div class="flex-1 h-0.5 mx-2 rounded" :class="store.section === 'results' ? 'bg-success' : 'bg-gray-200'"></div>
+          <div class="flex items-center gap-1.5" :class="store.section === 'results' ? 'opacity-100' : 'opacity-40'">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                 :class="store.section === 'results' ? 'text-white bg-success' : 'bg-gray-200 text-gray-400'">
+              {{ store.section === 'results' ? '✓' : '3' }}
+            </div>
+            <span class="text-xs font-semibold" :class="store.section === 'results' ? 'text-success' : 'text-gray-400'">Results</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- ── PROFILING SECTION ── -->
-    <template v-if="store.section === 'profiling'">
-      <ProfilingStep1 v-if="store.profilingStep === 1" />
-      <EligibilityCheck v-else-if="store.profilingStep === 6" />
-      <ProfilingStep2 v-else-if="store.profilingStep === 2" />
-      <ProfilingStep3 v-else-if="store.profilingStep === 3" />
-      <ProfilingStep4 v-else-if="store.profilingStep === 4" />
-      <ProfilingStep5 v-else-if="store.profilingStep === 5" />
+    <!-- ── FORM TAB ── -->
+    <template v-if="activeTab === 'form'">
+      <template v-if="store.section === 'profiling'">
+        <ProfilingStep1   v-if="store.profilingStep === 1" />
+        <EligibilityCheck v-else-if="store.profilingStep === 6" />
+        <ProfilingStep2   v-else-if="store.profilingStep === 2" />
+        <ProfilingStep3   v-else-if="store.profilingStep === 3" />
+        <ProfilingStep4   v-else-if="store.profilingStep === 4" />
+        <ProfilingStep5   v-else-if="store.profilingStep === 5" />
+      </template>
+      <AmvatForm   v-else-if="store.section === 'amvat'" />
+      <ResultsView v-else-if="store.section === 'results'" />
     </template>
 
-    <!-- ── AMVAT SECTION ── -->
-    <AmvatForm v-else-if="store.section === 'amvat'" />
-
-    <!-- ── RESULTS SECTION ── -->
-    <ResultsView v-else-if="store.section === 'results'" />
+    <!-- ── DASHBOARD TAB ── -->
+    <DashboardView v-else-if="activeTab === 'dashboard'" />
 
     <!-- ── Global Loading Overlay ── -->
     <div v-if="store.loading" class="loading-overlay">
@@ -68,7 +94,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useFormStore } from '@/stores/formStore'
 import { useApi } from '@/composables/useApi'
 
@@ -80,9 +106,11 @@ import ProfilingStep4   from '@/components/steps/ProfilingStep4.vue'
 import ProfilingStep5   from '@/components/steps/ProfilingStep5.vue'
 import AmvatForm        from '@/components/amvat/AmvatForm.vue'
 import ResultsView      from '@/components/amvat/ResultsView.vue'
+import DashboardView    from '@/components/DashboardView.vue'
 
-const store = useFormStore()
-const api   = useApi()
+const store     = useFormStore()
+const api       = useApi()
+const activeTab = ref('form')
 
 onMounted(async () => {
   try {

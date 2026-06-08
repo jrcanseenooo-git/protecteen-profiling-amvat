@@ -1,5 +1,5 @@
 // src/composables/useAmvatScoring.js
-// All AMVAT scoring logic extracted from AMVAT__Index.html
+// Scoring logic matching the original AMVAT app exactly
 
 export function useAmvatScoring() {
 
@@ -9,12 +9,11 @@ export function useAmvatScoring() {
   const norm = (v) => RAW_MAP[String(v)] ?? 0
   const rev  = (v) => REVERSE_MAP[String(v)] ?? 0
 
-  // Domain → question assignments & coding direction
-  // true = normal, false = reverse
+  // Domain → question assignments & coding direction (true=normal, false=reverse)
   const DOMAIN_QUESTIONS = {
-    empowerment:  [['q1',true],['q2',false],['q3',true],['q4',true]],
-    pregnancy:    [['q5',true],['q6',true],['q7',true],['q8',false]],
-    health:       [['q9',true],['q10',true],['q11',false],['q12',true]],
+    empowerment:  [['q1',true], ['q2',false],['q3',true], ['q4',true]],
+    pregnancy:    [['q5',true], ['q6',true], ['q7',true], ['q8',false]],
+    health:       [['q9',true], ['q10',true],['q11',false],['q12',true]],
     education:    [['q13',true],['q14',true],['q15',true],['q16',false]],
     support:      [['q17',false],['q18',true],['q19',false],['q20',true]],
     mentalhealth: [['q21',false],['q22',false],['q23',true],['q24',false],['q25',true]],
@@ -78,10 +77,10 @@ export function useAmvatScoring() {
     d.motherDisability = profile.mother_disability === 'Oo' ? -7 : 0
 
     const lp = profile.living_parents
-    if      (lp === 'Both parents are deceased')                         d.livingParents = -6
-    else if (lp === 'Solo parent or living with guardian only')          d.livingParents = -4
-    else if (lp === 'Both parents alive but not living with them')       d.livingParents = -2
-    else                                                                  d.livingParents = 0
+    if      (lp === 'Both parents are deceased')                               d.livingParents = -6
+    else if (lp === 'Solo parent or living with guardian only')                d.livingParents = -4
+    else if (lp === 'Both parents alive but not living with them')             d.livingParents = -2
+    else                                                                        d.livingParents = 0
 
     d.violence = profile.violence === 'Oo' ? -9 : 0
 
@@ -100,9 +99,9 @@ export function useAmvatScoring() {
   }
 
   function getOverallInterpretation(score) {
-    if (score >= 68) return 'High — Strong overall capacity and support'
-    if (score >= 34) return 'Moderate — Some areas still need strengthening'
-    return 'Low — High need for intensive intervention'
+    if (score >= 68) return 'High - Strong overall capacity and support'
+    if (score >= 34) return 'Moderate - Moderate capacity, some areas still need strengthening'
+    return 'Low - Low overall capacity, high need for intensive intervention'
   }
 
   function calculate(responses, profile) {
