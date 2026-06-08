@@ -34,11 +34,13 @@ const REGION_TARGETS = {
  
 function doGet(e) {
   const action = e?.parameter?.action || '';
+  const q      = e?.parameter?.q      || '';
   let result;
   try {
-    if      (action === 'getLocationDB') result = getLocationDB();
-    else if (action === 'getDashboard')  result = getDashboard();
-    else if (action === 'searchAMVAT')   result = searchAMVAT(e?.parameter?.q || '');
+    if      (action === 'getLocationDB')   result = getLocationDB();
+    else if (action === 'getDashboard')    result = getDashboard();
+    else if (action === 'searchProfiling') result = searchProfiling(q);
+    else if (action === 'searchAMVAT')     result = searchAMVAT(q);
     else result = { success: false, error: 'Unknown GET action: ' + action };
   } catch (err) {
     result = { success: false, error: err.toString() };
