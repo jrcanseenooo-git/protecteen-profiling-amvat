@@ -41,7 +41,7 @@
             <span class="text-gray-600">Has a Child <span class="text-xs text-gray-400">(must be YES)</span></span>
             <span :class="d.has_child === 'Yes' && parseInt(d.number_children) >= 1 ? 'text-success font-semibold' : 'text-danger font-semibold'">
               {{ d.has_child === 'Yes' && parseInt(d.number_children) >= 1
-                ? `✅ Yes (${d.number_children} child/ren)`
+                ? `✅ Yes`
                 : `❌ ${d.has_child === 'No' ? 'No' : 'No children recorded'}` }}
             </span>
           </div>
@@ -96,7 +96,7 @@
       <button class="btn-secondary" @click="store.setProfilingStep(1)">← Edit Information</button>
       <div class="flex gap-3">
         <button v-if="!el.qualified" class="btn-warning" @click="showNotQualifiedConfirm = true">
-          💾 Save Not Qualified
+          Save Not Qualified
         </button>
         <button v-if="el.qualified" class="btn-success" @click="store.setProfilingStep(2)">
           Proceed to Survey →
