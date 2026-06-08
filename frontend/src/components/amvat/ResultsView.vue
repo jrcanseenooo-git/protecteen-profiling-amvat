@@ -10,7 +10,7 @@
       </div>
       <h2 class="text-success text-xl font-bold mb-1">Assessment Submitted!</h2>
       <p class="text-sm text-gray-500">{{ store.amvatProfile.name }}</p>
-      <p class="text-xs text-gray-400 mt-1">{{ store.amvatProfile.municipality_city }}, {{ store.amvatProfile.province }} — Region {{ store.amvatProfile.region }}</p>
+      <p class="text-xs text-gray-400 mt-1">{{ store.amvatProfile.municipality_city }}, {{ store.amvatProfile.province }} - Region {{ store.amvatProfile.region }}</p>
     </div>
 
     <!-- Overall Score Card -->
@@ -33,7 +33,7 @@
           <p class="font-bold text-lg">{{ scores.subtotal }}</p>
         </div>
         <div>
-          <p class="opacity-60">Total Deduction</p>
+          <p class="opacity-60">Part II Subtotal</p>
           <p class="font-bold text-lg text-red-300">{{ scores.totalDeduction }}</p>
         </div>
       </div>
@@ -42,7 +42,7 @@
     <!-- Deduction Breakdown -->
     <div v-if="hasDeductions" class="bg-orange-50 border border-orange-200 rounded-2xl p-4 mb-5">
       <h4 class="font-bold text-orange-600 text-sm mb-3 flex items-center gap-2">
-        <span class="material-icons-round" style="font-size:18px;vertical-align:-4px;margin-right:6px;color:#ea8c00">trending_down</span>Deduction Breakdown
+        <span class="material-icons-round" style="font-size:18px;vertical-align:-4px;margin-right:6px;color:#ea8c00">trending_down</span>Part II: Breakdown
       </h4>
       <div class="space-y-1.5">
         <div v-for="(label, key) in deductionLabels" :key="key">
@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="flex justify-between items-center text-sm pt-2 border-t border-orange-200 font-bold">
-          <span class="text-gray-700">Total Deduction</span>
+          <span class="text-gray-700">Total</span>
           <span class="text-danger text-base">{{ scores.totalDeduction }}</span>
         </div>
       </div>
@@ -77,7 +77,7 @@
             <span class="text-2xl font-black" :style="{ color: d.color }">
               {{ scores[d.key]?.score ?? scores[d.key] }}
             </span>
-            <p class="text-xs text-gray-400">/ {{ d.max }}</p>
+            <!-- <p class="text-xs text-gray-400">/ {{ d.max }}</p> -->
           </div>
         </div>
         <!-- Score bar -->
@@ -101,9 +101,9 @@
       <button class="btn-primary flex-1 py-3" @click="store.resetAll()">
         <span class="material-icons-round mi-btn">person_add</span>New Respondent
       </button>
-      <button class="btn-secondary flex-1 py-3" onclick="window.print()">
+      <!-- <button class="btn-secondary flex-1 py-3" onclick="window.print()">
         <span class="material-icons-round mi-btn">print</span>Print Results
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
@@ -148,12 +148,12 @@ const deductionLabels = {
 }
 
 const domainList = [
-  { key: 'empowerment',  label: '💪 Individual Empowerment',            color: '#7c3aed', max: 16 },
-  { key: 'pregnancy',    label: '🤰 Reduced Repeated Pregnancies',      color: '#a78bfa', max: 16 },
-  { key: 'health',       label: '🏥 Health',                            color: '#7c3aed', max: 16 },
-  { key: 'education',    label: '📚 Education and Livelihood',          color: '#2e7d32', max: 16 },
-  { key: 'support',      label: '🤝 Family and Community Support',      color: '#f57c00', max: 16 },
-  { key: 'mentalhealth', label: '🧠 Mental Health',                     color: '#7b1fa2', max: 20 },
+  { key: 'empowerment',  label: 'Individual Empowerment',            color: '#7c3aed', max: 16 },
+  { key: 'pregnancy',    label: 'Reduced Repeated Pregnancies',      color: '#a78bfa', max: 16 },
+  { key: 'health',       label: 'Health',                            color: '#7c3aed', max: 16 },
+  { key: 'education',    label: 'Education and Livelihood',          color: '#2e7d32', max: 16 },
+  { key: 'support',      label: 'Family and Community Support',      color: '#f57c00', max: 16 },
+  { key: 'mentalhealth', label: 'Mental Health',                     color: '#7b1fa2', max: 20 },
 ]
 
 function barWidth(key, max) {
