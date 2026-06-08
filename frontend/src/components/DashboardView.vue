@@ -7,11 +7,23 @@
         <h1 class="text-2xl font-bold text-primary">ProtecTEEN Dashboard</h1>
         <p class="text-sm text-gray-500 mt-0.5">Real-time profiling &amp; AMVAT tracking</p>
       </div>
-      <button @click="loadData" :disabled="loading"
-        class="flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 border-primary text-primary text-sm font-semibold hover:bg-primary/10 transition-all">
-        <span class="material-icons-round" :class="loading ? 'animate-spin' : ''" style="font-size:18px">refresh</span>
-        Refresh
-      </button>
+      <div class="flex items-center gap-2">
+        <!-- Region Filter Dropdown -->
+        <div class="relative">
+          <select v-model="selectedRegion"
+            class="appearance-none pl-3 pr-8 py-2 rounded-xl border-2 border-primary text-primary text-sm font-semibold bg-white outline-none cursor-pointer hover:bg-primary/5 transition-all">
+            <option value="All">All Regions</option>
+            <option v-for="r in REGION_KEYS" :key="r" :value="r">{{ r }}</option>
+          </select>
+          <span class="material-icons-round pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-primary" style="font-size:16px">expand_more</span>
+        </div>
+        <!-- Refresh -->
+        <button @click="loadData" :disabled="loading"
+          class="flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 border-primary text-primary text-sm font-semibold hover:bg-primary/10 transition-all">
+          <span class="material-icons-round" :class="loading ? 'animate-spin' : ''" style="font-size:18px">refresh</span>
+          Refresh
+        </button>
+      </div>
     </div>
 
     <!-- ── Error ── -->
@@ -122,27 +134,12 @@
     </div>
 
     <!-- ══════════════════════════════════════
-         REGION FILTER TABS
-    ══════════════════════════════════════ -->
-    <div class="flex gap-2 flex-wrap mb-5">
-      <button v-for="r in ['All', ...REGION_KEYS]" :key="r"
-        @click="selectedRegion = r"
-        :class="selectedRegion === r
-          ? 'text-white shadow-sm'
-          : 'bg-white text-gray-500 border border-gray-200 hover:border-primary hover:text-primary'"
-        :style="selectedRegion === r ? 'background:#7c3aed' : ''"
-        class="px-4 py-1.5 rounded-full text-xs font-bold transition-all">
-        {{ r === 'All' ? 'All Regions' : r }}
-      </button>
-    </div>
-
-    <!-- ══════════════════════════════════════
-         OVERVIEW CHART (all regions combined)
+         OVERVIEW CHART (All Regions only)
     ══════════════════════════════════════ -->
     <div v-if="selectedRegion === 'All'" class="bg-white rounded-2xl shadow-card p-5 mb-6">
       <h3 class="font-bold text-gray-700 text-sm mb-4 flex items-center gap-2">
         <span class="material-icons-round step-icon">pie_chart</span>
-        Overall AMVAT Score Distribution
+        Overall AMVAT Score Distribution — All Regions
       </h3>
       <div class="flex flex-col sm:flex-row items-center gap-6">
         <!-- Donut chart -->
@@ -191,9 +188,11 @@
     </div>
 
     <!-- ══════════════════════════════════════
-         PER-REGION CARDS (filtered)
+         PER-REGION CARDS
+         - All Regions: 2-column grid
+         - Specific Region: single full-width card
     ══════════════════════════════════════ -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div :class="selectedRegion === 'All' ? 'grid grid-cols-1 sm:grid-cols-2 gap-5' : 'grid grid-cols-1 gap-5'">
       <div v-for="region in filteredRegions" :key="region.name"
            class="bg-white rounded-2xl shadow-card overflow-hidden">
 
