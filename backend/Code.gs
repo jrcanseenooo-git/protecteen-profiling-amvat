@@ -480,6 +480,21 @@ function addAMVATHeaders(sheet) {
 }
  
 // ============================================================
+// DATE FORMAT HELPER
+// ============================================================
+ 
+function formatDate(val) {
+  if (!val) return '';
+  // Already a string like '2006-09-23'
+  if (typeof val === 'string') return val.split('T')[0];
+  // Date object from Google Sheets
+  if (val instanceof Date && !isNaN(val)) {
+    return Utilities.formatDate(val, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  }
+  return String(val);
+}
+ 
+// ============================================================
 // SEARCH PROFILING
 // ============================================================
  
@@ -525,7 +540,7 @@ function searchProfiling(searchTerm) {
         municipality: (row[COL.mun]  || '').toString(),
         barangay:     (row[COL.bar]  || '').toString(),
         contact:      (row[COL.con]  || '').toString(),
-        birthDate:    (row[COL.dob]  || '').toString(),
+        birthDate:    formatDate(row[COL.dob]),
       });
     }
   });
@@ -581,25 +596,51 @@ function getDashboard() {
     const profilingSS = SpreadsheetApp.openById(SPREADSHEET_IDS.profiling);
     const amvatSS     = SpreadsheetApp.openById(SPREADSHEET_IDS.amvat);
  
+    // Count profiling rows — skip header and any blank rows
     Object.keys(REGION_MAP).forEach(region => {
       const sheet = profilingSS.getSheetByName(REGION_MAP[region]);
-      result.profiling[region] = sheet ? Math.max(0, sheet.getLastRow() - 1) : 0;
+      if (!sheet || sheet.getLastRow() < 1) { result.profiling[region] = 0; return; }
+      const data = sheet.getDataRange().getValues();
+      // Count rows where col 5 (First Name) is not empty
+      let count = 0;
+      for (let i = 0; i < data.length; i++) {
+        const cell = String(data[i][5] || '').trim();
+        if (cell && cell !== 'First Name') count++;
+      }
+      result.profiling[region] = count;
     });
  
+    // Count not qualified — skip header and blank rows
     const nqSheet = profilingSS.getSheetByName('not_qualified_response');
-    result.notQualified = nqSheet ? Math.max(0, nqSheet.getLastRow() - 1) : 0;
+    if (nqSheet && nqSheet.getLastRow() > 0) {
+      const nqData = nqSheet.getDataRange().getValues();
+      let nqCount = 0;
+      for (let i = 0; i < nqData.length; i++) {
+        const cell = String(nqData[i][3] || '').trim(); // col 3 = First Name in NQ sheet
+        if (cell && cell !== 'First Name') nqCount++;
+      }
+      result.notQualified = nqCount;
+    }
  
+    // Count AMVAT rows + score distribution
     Object.keys(REGION_MAP).forEach(region => {
       const sheet = amvatSS.getSheetByName(REGION_MAP[region]);
-      if (!sheet || sheet.getLastRow() <= 1) {
+      if (!sheet || sheet.getLastRow() < 1) {
         result.amvat[region] = { low: 0, mid: 0, high: 0, total: 0 };
         return;
       }
       const data     = sheet.getDataRange().getValues();
       const headers  = data[0].map(h => String(h).trim());
-      const scoreCol = headers.indexOf('Final Total Score');
+      // Find score column — try header first, fall back to hardcoded position
+      let scoreCol = headers.indexOf('Final Total Score');
+      if (scoreCol === -1) scoreCol = data[0][0].toString().includes('Date') ? 75 : -1;
+ 
       let low = 0, mid = 0, high = 0;
-      for (let i = 1; i < data.length; i++) {
+      const startRow = (String(data[0][0]).trim() === 'Date' || String(data[0][0]).trim() === 'Date Submitted') ? 1 : 0;
+      for (let i = startRow; i < data.length; i++) {
+        const nameCell = String(data[i][1] || '').trim(); // col 1 = Name
+        if (!nameCell || nameCell === 'Name') continue;   // skip blank/header
+        if (scoreCol === -1) continue;
         const score = parseFloat(data[i][scoreCol]);
         if (isNaN(score)) continue;
         if      (score <= 40) low++;
