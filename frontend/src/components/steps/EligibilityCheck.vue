@@ -93,13 +93,13 @@
 
     <!-- Buttons -->
     <div class="flex flex-wrap gap-3 justify-between">
-      <button class="btn-secondary" @click="store.setProfilingStep(1)">← Edit Information</button>
+      <button class="btn-secondary" @click="store.setProfilingStep(1)">Back</button>
       <div class="flex gap-3">
         <button v-if="!el.qualified" class="btn-warning" @click="showNotQualifiedConfirm = true">
-          Save Not Qualified
+          Save Response
         </button>
         <button v-if="el.qualified" class="btn-success" @click="store.setProfilingStep(2)">
-          Proceed to Survey →
+          Proceed to Survey
         </button>
       </div>
     </div>
