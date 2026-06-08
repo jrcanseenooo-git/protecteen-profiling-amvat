@@ -112,36 +112,37 @@ function getLocationDB() {
 // ============================================================
  
 function checkDuplicate(ss, formData) {
-  // Check all region sheets for a name + birthdate match
   const firstName = (formData.first_name || '').toLowerCase().trim();
   const lastName  = (formData.last_name  || '').toLowerCase().trim();
   const birthDate = (formData.birth_date || '').trim();
  
+  // Fixed column positions matching submitProfiling order:
+  // 5=FirstName, 7=LastName, 21=DateOfBirth
+  const FN_COL  = 5;
+  const LN_COL  = 7;
+  const DOB_COL = 21;
+ 
   for (const region of Object.keys(REGION_MAP)) {
     const sheet = ss.getSheetByName(REGION_MAP[region]);
-    if (!sheet || sheet.getLastRow() <= 1) continue;
+    if (!sheet || sheet.getLastRow() < 1) continue;
  
-    const data    = sheet.getDataRange().getValues();
-    const headers = data[0].map(h => String(h).trim());
-    const fnCol   = headers.indexOf('First Name');
-    const lnCol   = headers.indexOf('Last Name');
-    const dobCol  = headers.indexOf('Date of Birth');
+    const data = sheet.getDataRange().getValues();
+    const firstCell = String(data[0][0] || '').trim();
+    const startRow  = (firstCell === 'Date Submitted' || firstCell === 'Date') ? 1 : 0;
  
-    if (fnCol === -1 || lnCol === -1) continue;
+    for (let i = startRow; i < data.length; i++) {
+      const fn  = (data[i][FN_COL]  || '').toString().toLowerCase().trim();
+      const ln  = (data[i][LN_COL]  || '').toString().toLowerCase().trim();
+      const dob = (data[i][DOB_COL] || '').toString().trim();
  
-    for (let i = 1; i < data.length; i++) {
-      const fn  = (data[i][fnCol]  || '').toString().toLowerCase().trim();
-      const ln  = (data[i][lnCol]  || '').toString().toLowerCase().trim();
-      const dob = dobCol !== -1 ? (data[i][dobCol] || '').toString().trim() : '';
- 
-      // Match: same first+last name AND same birth date
+      if (!fn || !ln) continue;
       if (fn === firstName && ln === lastName && (dob === birthDate || !birthDate)) {
         return {
-          isDuplicate: true,
+          isDuplicate:    true,
           existingRegion: region,
-          existingName: `${data[i][fnCol]} ${data[i][lnCol]}`,
-          existingRow: i + 1,
-          message: `Duplicate detected: ${data[i][fnCol]} ${data[i][lnCol]} is already profiled in Region ${region} (row ${i + 1}).`
+          existingName:   `${data[i][FN_COL]} ${data[i][LN_COL]}`,
+          existingRow:    i + 1,
+          message: `Duplicate detected: ${data[i][FN_COL]} ${data[i][LN_COL]} is already profiled in Region ${region} (row ${i + 1}).`
         };
       }
     }
@@ -489,56 +490,47 @@ function searchProfiling(searchTerm) {
   searchTerm = searchTerm.toLowerCase().trim();
   const ss = SpreadsheetApp.openById(SPREADSHEET_IDS.profiling);
   const results = [];
-  const debugInfo = [];
+ 
+  // Column positions matching submitProfiling appendRow order (0-indexed):
+  // 0=Date, 1=4Ps, 2=SLP, 3=IP, 4=HH#, 5=FirstName, 6=MiddleName, 7=LastName,
+  // 8=Region, 9=Province, 10=Municipality, 11=Barangay, 14=Contact, 21=DOB
+  const COL = { fn: 5, mn: 6, ln: 7, reg: 8, prov: 9, mun: 10, bar: 11, con: 14, dob: 21 };
  
   Object.keys(REGION_MAP).forEach(region => {
     const sheet = ss.getSheetByName(REGION_MAP[region]);
-    if (!sheet) { debugInfo.push(region + ': sheet not found'); return; }
+    if (!sheet || sheet.getLastRow() < 1) return;
  
-    const lastRow = sheet.getLastRow();
-    if (lastRow <= 1) { debugInfo.push(region + ': empty sheet (' + lastRow + ' rows)'); return; }
+    const data = sheet.getDataRange().getValues();
  
-    const data    = sheet.getDataRange().getValues();
-    const headers = data[0].map(h => String(h).trim());
+    // Detect if row 0 is a header row or data row
+    // Header row will have text like 'First Name'; data row will have a date or name
+    const firstRowFirstCell = String(data[0][0] || '').trim();
+    const startRow = (firstRowFirstCell === 'Date Submitted' || firstRowFirstCell === 'Date') ? 1 : 0;
  
-    const col = {
-      fn:  headers.indexOf('First Name'),
-      mn:  headers.indexOf('Middle Name'),
-      ln:  headers.indexOf('Last Name'),
-      reg: headers.indexOf('Region'),
-      prov:headers.indexOf('Province'),
-      mun: headers.indexOf('Municipality/City'),
-      bar: headers.indexOf('Barangay'),
-      dob: headers.indexOf('Date of Birth'),
-      con: headers.indexOf('Contact'),
-    };
- 
-    debugInfo.push(region + ': rows=' + lastRow + ' fnCol=' + col.fn + ' lnCol=' + col.ln + ' headers[5]=' + headers[5] + ' headers[7]=' + headers[7]);
- 
-    if (col.fn === -1 || col.ln === -1) return;
- 
-    for (let i = 1; i < data.length && results.length < 30; i++) {
+    for (let i = startRow; i < data.length && results.length < 30; i++) {
       const row = data[i];
-      const fn  = (row[col.fn] || '').toString().toLowerCase();
-      const mn  = (row[col.mn] || '').toString().toLowerCase();
-      const ln  = (row[col.ln] || '').toString().toLowerCase();
+      const fn  = (row[COL.fn] || '').toString().toLowerCase().trim();
+      const mn  = (row[COL.mn] || '').toString().toLowerCase().trim();
+      const ln  = (row[COL.ln] || '').toString().toLowerCase().trim();
       const full = `${fn} ${mn} ${ln}`.replace(/\s+/g, ' ').trim();
+ 
+      if (!fn || !ln) continue; // skip empty rows
       if (!fn.includes(searchTerm) && !ln.includes(searchTerm) && !full.includes(searchTerm)) continue;
  
       results.push({
-        rowIndex: i + 1,
-        fullName: `${row[col.fn]||''} ${row[col.mn]||''} ${row[col.ln]||''}`.replace(/\s+/g,' ').trim(),
-        region:   row[col.reg] || region,
-        province: row[col.prov] || '',
-        municipality: row[col.mun] || '',
-        barangay: row[col.bar] || '',
-        birthDate: col.dob !== -1 ? (row[col.dob] || '').toString() : '',
-        contact:  col.con !== -1 ? (row[col.con] || '').toString() : '',
+        rowIndex:     i + 1,
+        fullName:     `${row[COL.fn]||''} ${row[COL.mn]||''} ${row[COL.ln]||''}`.replace(/\s+/g,' ').trim(),
+        region:       (row[COL.reg] || region).toString(),
+        province:     (row[COL.prov] || '').toString(),
+        municipality: (row[COL.mun]  || '').toString(),
+        barangay:     (row[COL.bar]  || '').toString(),
+        contact:      (row[COL.con]  || '').toString(),
+        birthDate:    (row[COL.dob]  || '').toString(),
       });
     }
   });
  
-  return { success: true, results, count: results.length, debug: debugInfo };
+  return { success: true, results, count: results.length };
 }
  
 // ============================================================
