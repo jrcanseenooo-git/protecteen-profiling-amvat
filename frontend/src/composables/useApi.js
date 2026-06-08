@@ -1,4 +1,3 @@
-// src/composables/useApi.js
 const GAS_URL = import.meta.env.VITE_GAS_URL
 
 async function get(action, params = {}) {
@@ -22,13 +21,12 @@ async function post(action, data = {}) {
 }
 
 export function useApi() {
-  const getLocationDB      = ()           => get('getLocationDB')
-  const getDashboard       = ()           => get('getDashboard')
-  const submitProfiling    = (formData)   => post('submitProfiling', formData)
-  const submitNotQualified = (formData)   => post('submitNotQualified', formData)
-  const submitAMVAT        = (data)       => post('submitAMVAT', data)
-  // Search via GET so the query string is sent cleanly
-  const searchProfiling    = (q)          => get('searchProfiling',  { q })
-  const searchAMVAT        = (q)          => get('searchAMVAT',      { q })
+  const getLocationDB      = ()         => get('getLocationDB')
+  const getDashboard       = ()         => get('getDashboard')
+  const submitProfiling    = (formData) => post('submitProfiling', formData)
+  const submitNotQualified = (formData) => post('submitNotQualified', formData)
+  const submitAMVAT        = (data)     => post('submitAMVAT', data)
+  const searchProfiling    = (q)        => get('searchProfiling', { q })
+  const searchAMVAT        = (q)        => get('searchAMVAT', { q })
   return { getLocationDB, getDashboard, submitProfiling, submitNotQualified, submitAMVAT, searchProfiling, searchAMVAT }
 }
