@@ -91,6 +91,18 @@
                       : 'bg-orange-100 text-orange-700'">
                 {{ r.amvatAssessed ? '✓ Profiled + Assessed' : '⚠ Profiled Only' }}
               </span>
+              <!-- Action button -->
+              <button v-if="!r.amvatAssessed"
+                @click="resumeAMVAT(r)"
+                class="mt-1 text-[10px] font-bold px-2 py-1 rounded-lg text-white flex items-center gap-1"
+                style="background:#6d28d9">
+                <span class="material-icons-round" style="font-size:12px">assignment</span>
+                Start AMVAT
+              </button>
+              <span v-else class="mt-1 text-[10px] text-green-600 font-semibold flex items-center gap-1">
+                <span class="material-icons-round" style="font-size:12px">check_circle</span>
+                Complete
+              </span>
             </div>
           </div>
         </div>
@@ -287,8 +299,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useApi } from '@/composables/useApi'
+import { useFormStore } from '@/stores/formStore'
 
-const api = useApi()
+const api   = useApi()
+const store = useFormStore()
+
+const emit = defineEmits(['navigate'])
 const loading    = ref(true)
 const error      = ref('')
 const rawData    = ref({ profiling: {}, amvat: {}, notQualified: 0 })
@@ -441,6 +457,23 @@ async function doSearch() {
   } finally {
     searching.value = false
   }
+}
+
+// ── Resume AMVAT for a profiled-only respondent ──
+function resumeAMVAT(respondent) {
+  // Pre-fill the AMVAT profile with data from the search result
+  store.patchAmvatProfile({
+    name:             respondent.fullName,
+    region:           respondent.region,
+    province:         respondent.province,
+    municipality_city:respondent.municipality,
+    barangay:         respondent.barangay,
+    contact:          respondent.contact,
+    dateOfBirth:      respondent.birthDate,
+  })
+  store.setSection('amvat')
+  // Switch to Data Entry tab by emitting navigate event
+  emit('navigate', 'form')
 }
 
 onMounted(loadData)
