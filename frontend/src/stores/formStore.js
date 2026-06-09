@@ -1,6 +1,18 @@
 // src/stores/formStore.js
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+
+const STORAGE_KEY = 'protecteen_state'
+
+function saveState(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)) } catch(e) {}
+}
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') } catch(e) { return null }
+}
+function clearState() {
+  try { localStorage.removeItem(STORAGE_KEY) } catch(e) {}
+}
 
 export const useFormStore = defineStore('form', () => {
 
@@ -59,6 +71,18 @@ export const useFormStore = defineStore('form', () => {
   // ── Location DB
   const locationDB = ref({})
 
+  // ── Restore persisted state on init
+  const saved = loadState()
+  if (saved) {
+    try {
+      if (saved.section)       section.value       = saved.section
+      if (saved.profilingStep) profilingStep.value = saved.profilingStep
+      if (saved.profilingData) Object.assign(profilingData.value, saved.profilingData)
+      if (saved.amvatProfile)  Object.assign(amvatProfile.value,  saved.amvatProfile)
+      if (saved.amvatResponses)amvatResponses.value = saved.amvatResponses
+    } catch(e) {}
+  }
+
   // ── Loading / error
   const loading = ref(false)
   const error = ref('')
@@ -90,7 +114,18 @@ export const useFormStore = defineStore('form', () => {
       reasons.push(`Living with partner at age ${age} (must be 18–19)`)
     }
 
-    return { qualified: reasons.length === 0, reasons, age }
+    // ── Auto-persist state on every change
+  function persistState() {
+    saveState({
+      section:        section.value,
+      profilingStep:  profilingStep.value,
+      profilingData:  profilingData.value,
+      amvatProfile:   amvatProfile.value,
+      amvatResponses: amvatResponses.value,
+    })
+  }
+
+  return { qualified: reasons.length === 0, reasons, age }
   })
 
   // ── Actions
@@ -186,6 +221,7 @@ export const useFormStore = defineStore('form', () => {
   }
 
   function resetAll() {
+    clearState()
     section.value = 'profiling'
     profilingStep.value = 1
     amvatResponses.value = {}
