@@ -70,7 +70,7 @@
     </template>
 
     <!-- ── DASHBOARD TAB ── -->
-    <DashboardView v-else-if="activeTab === 'dashboard'" />
+    <DashboardView v-else-if="activeTab === 'dashboard'" @navigate="activeTab = $event" />
 
     <!-- ── Global Loading Overlay ── -->
     <div v-if="store.loading" class="loading-overlay">
