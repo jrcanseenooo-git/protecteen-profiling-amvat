@@ -25,9 +25,8 @@
         </div>
         <div class="field">
           <!-- Household number: accepts leading zeros, stored as string -->
-          <input v-model="f.household_number" type="text"
-            pattern="[0-9]*" inputmode="numeric" placeholder=" "
-            @input="f.household_number = f.household_number.replace(/[^0-9]/g,'')" />
+          <input v-model="f.household_number" type="text" pattern="[0-9]*" inputmode="numeric" placeholder=" "
+            @input="f.household_number = f.household_number.replace(/[^0-9]/g, '')" />
           <label class="floating-label">Household Number</label>
         </div>
       </div>
@@ -91,18 +90,15 @@
       </div>
       <div v-if="f.ip_membership === 'Others'" class="field mt-4">
         <input v-model="f.ip_other" type="text" placeholder=" "
-          :class="otherErrors.ip ? 'border-b-2 border-b-danger' : ''"
-          @input="otherErrors.ip = false" />
+          :class="otherErrors.ip ? 'border-b-2 border-b-danger' : ''" @input="otherErrors.ip = false" />
         <label class="floating-label"><span class="text-red-500">*</span> Please specify Indigenous Group</label>
         <p v-if="otherErrors.ip" class="text-danger text-xs mt-1">⚠️ Please specify the Indigenous Group.</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 mt-4">
         <div class="field">
           <!-- PH mobile: 11 digits starting with 09 -->
-          <input v-model="f.contact" type="text" inputmode="numeric"
-            maxlength="11" placeholder=" "
-            @input="validateContact"
-            :class="contactError ? 'border-b-danger' : ''" required />
+          <input v-model="f.contact" type="text" inputmode="numeric" maxlength="11" placeholder=" "
+            @input="validateContact" :class="contactError ? 'border-b-danger' : ''" required />
           <label class="floating-label"><span class="text-red-500">*</span> Contact Number</label>
           <p v-if="contactError" class="text-xs text-danger mt-1">{{ contactError }}</p>
         </div>
@@ -138,8 +134,7 @@
       </div>
       <div v-if="f.religion === 'Other'" class="field mt-4">
         <input v-model="f.religion_other" type="text" placeholder=" "
-          :class="otherErrors.religion ? 'border-b-2 border-b-danger' : ''"
-          @input="otherErrors.religion = false" />
+          :class="otherErrors.religion ? 'border-b-2 border-b-danger' : ''" @input="otherErrors.religion = false" />
         <label class="floating-label"><span class="text-red-500">*</span> Please specify Religion</label>
         <p v-if="otherErrors.religion" class="text-danger text-xs mt-1">⚠️ Please specify the Religion.</p>
       </div>
@@ -148,14 +143,9 @@
     <!-- Address Information -->
     <div class="section-card mb-6">
       <h4 class="section-card-title">Address Information</h4>
-      <LocationDropdowns
-        :modelRegion="f.region" :modelProvince="f.province"
-        :modelMunicipality="f.municipality_city" :modelBarangay="f.barangay"
-        @update:modelRegion="f.region = $event"
-        @update:modelProvince="f.province = $event"
-        @update:modelMunicipality="f.municipality_city = $event"
-        @update:modelBarangay="f.barangay = $event"
-      />
+      <LocationDropdowns :modelRegion="f.region" :modelProvince="f.province" :modelMunicipality="f.municipality_city"
+        :modelBarangay="f.barangay" @update:modelRegion="f.region = $event" @update:modelProvince="f.province = $event"
+        @update:modelMunicipality="f.municipality_city = $event" @update:modelBarangay="f.barangay = $event" />
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 mt-4">
         <div class="field">
           <input v-model="f.street_address" type="text" placeholder=" " />
@@ -188,13 +178,18 @@
           </select>
           <label class="floating-label"><span class="text-red-500">*</span> Has a Child?</label>
         </div>
-        <div class="field mt-4">
-          <!-- Number of children: min 1, no negatives, no zero -->
-          <input v-model.number="f.number_children" type="number" min="1"
-            placeholder=" " required
-            :disabled="f.has_child === 'No'"
-            @input="clampChildren" />
-          <label class="floating-label"><span class="text-red-500">*</span> Number of Children</label>
+        <div class="mt-4">
+          <div v-if="f.has_child !== 'No'" class="field">
+            <input v-model.number="f.number_children" type="number" min="1"
+              placeholder=" " required :disabled="!f.has_child"
+              @input="clampChildren" />
+            <label class="floating-label"><span class="text-red-500">*</span> Number of Children</label>
+          </div>
+          <div v-if="f.has_child === 'No'"
+            class="bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 text-xs text-orange-700 flex items-start gap-2">
+            <span class="material-icons-round shrink-0" style="font-size:16px;margin-top:1px">info</span>
+            <span>No living child yet (<strong>currently pregnant</strong>)</span>
+          </div>
         </div>
         <div class="field mt-4">
           <select v-model="f.with_partner" required>
@@ -233,7 +228,10 @@
           <option value="" disabled hidden></option>
           <option value="None">None</option>
           <option value="Special Occupations">Special Occupations</option>
-          <option value="Officials of government & special interest orgs, corp. executive, manager, managing proprietor/supervisor">Officials of government &amp; special interest orgs, corp. executive, manager, managing proprietor/supervisor</option>
+          <option
+            value="Officials of government & special interest orgs, corp. executive, manager, managing proprietor/supervisor">
+            Officials of government &amp; special interest orgs, corp. executive, manager, managing
+            proprietor/supervisor</option>
           <option value="Professionals">Professionals</option>
           <option value="Technicians & Assoc. Professionals">Technicians &amp; Assoc. Professionals</option>
           <option value="Clerks">Clerks</option>
@@ -248,16 +246,17 @@
       </div>
       <div v-if="f.occupation === 'Other'" class="field mt-4">
         <input v-model="f.occupation_other" type="text" placeholder=" "
-          :class="otherErrors.occupation ? 'border-b-2 border-b-danger' : ''"
-          @input="otherErrors.occupation = false" />
+          :class="otherErrors.occupation ? 'border-b-2 border-b-danger' : ''" @input="otherErrors.occupation = false" />
         <label class="floating-label"><span class="text-red-500">*</span> Please specify Occupation</label>
         <p v-if="otherErrors.occupation" class="text-danger text-xs mt-1">⚠️ Please specify the Occupation.</p>
       </div>
       <div class="field mt-4">
         <select v-model="f.occupation_class" required>
           <option value="" disabled hidden></option>
-          <option value="Not employed but looking for work in the past 3 months">Not employed but looking for work in the past 3 months</option>
-          <option value="Not employed and not looking for work in the past 3 months">Not employed and not looking for work in the past 3 months</option>
+          <option value="Not employed but looking for work in the past 3 months">Not employed but looking for work in
+            the past 3 months</option>
+          <option value="Not employed and not looking for work in the past 3 months">Not employed and not looking for
+            work in the past 3 months</option>
           <option value="Self-employed">Self-employed</option>
           <option value="Private Company Employee">Private Company Employee</option>
           <option value="Government Employee">Government Employee</option>
@@ -306,15 +305,15 @@
       </div>
       <div v-if="f.critical_illness === 'Other'" class="field mt-4">
         <input v-model="f.critical_illness_other" type="text" placeholder=" "
-          :class="otherErrors.illness ? 'border-b-2 border-b-danger' : ''"
-          @input="otherErrors.illness = false" />
+          :class="otherErrors.illness ? 'border-b-2 border-b-danger' : ''" @input="otherErrors.illness = false" />
         <label class="floating-label"><span class="text-red-500">*</span> Please specify Critical Illness</label>
         <p v-if="otherErrors.illness" class="text-danger text-xs mt-1">⚠️ Please specify the Critical Illness.</p>
       </div>
     </div>
 
     <!-- Smart age preview -->
-    <div v-if="agePreview > 0" class="bg-purple-50 border border-purple-200 rounded-xl px-5 py-3 mb-4 text-sm flex items-center gap-3">
+    <div v-if="agePreview > 0"
+      class="bg-purple-50 border border-purple-200 rounded-xl px-5 py-3 mb-4 text-sm flex items-center gap-3">
       <!-- <span class="text-2xl">🎂</span> -->
       <div>
         <span class="font-semibold text-primary">Age: {{ agePreview }} years old</span>
@@ -343,7 +342,7 @@ import { reactive, ref, computed } from 'vue'
 import { useFormStore } from '@/stores/formStore'
 import LocationDropdowns from '@/components/LocationDropdowns.vue'
 
-const store    = useFormStore()
+const store = useFormStore()
 const alertMsg = ref('')
 const contactError = ref('')
 const otherErrors = reactive({
@@ -374,12 +373,12 @@ const agePreview = computed(() => {
   return age > 0 ? age : 0
 })
 
-function onIPChange()              { if (f.ip_membership !== 'Others') f.ip_other = '' }
-function onReligionChange()        { if (f.religion !== 'Other') f.religion_other = '' }
-function onOccupationChange()      { if (f.occupation !== 'Other') f.occupation_other = '' }
+function onIPChange() { if (f.ip_membership !== 'Others') f.ip_other = '' }
+function onReligionChange() { if (f.religion !== 'Other') f.religion_other = '' }
+function onOccupationChange() { if (f.occupation !== 'Other') f.occupation_other = '' }
 function onCriticalIllnessChange() { if (f.critical_illness !== 'Other') f.critical_illness_other = '' }
-function onHasChildChange()        { if (f.has_child === 'No') f.number_children = '' }
-function clampChildren()           { if (f.number_children < 1 && f.number_children !== '') f.number_children = 1 }
+function onHasChildChange() { if (f.has_child === 'No') f.number_children = '' }
+function clampChildren() { if (f.number_children < 1 && f.number_children !== '') f.number_children = 1 }
 
 // PH mobile number validation: 11 digits, starts with 09
 function validateContact() {
@@ -392,22 +391,22 @@ function validateContact() {
 }
 
 const REQUIRED = [
-  'fourPs','slp','ip_membership','first_name','last_name',
-  'region','province','municipality_city','barangay',
-  'contact','civil_status','religion','family_head',
-  'has_child','number_children','with_partner','birth_date',
-  'education','occupation','occupation_class',
-  'disability_special','critical_illness',
+  'fourPs', 'slp', 'ip_membership', 'first_name', 'last_name',
+  'region', 'province', 'municipality_city', 'barangay',
+  'contact', 'civil_status', 'religion', 'family_head',
+  'has_child', 'with_partner', 'birth_date',
+  'education', 'occupation', 'occupation_class',
+  'disability_special', 'critical_illness',
 ]
 
 function handleNext() {
   alertMsg.value = ''
 
   // Validate and resolve Others - mark errors inline
-  otherErrors.ip         = f.ip_membership === 'Others' && !f.ip_other?.trim()
-  otherErrors.religion   = f.religion === 'Other' && !f.religion_other?.trim()
+  otherErrors.ip = f.ip_membership === 'Others' && !f.ip_other?.trim()
+  otherErrors.religion = f.religion === 'Other' && !f.religion_other?.trim()
   otherErrors.occupation = f.occupation === 'Other' && !f.occupation_other?.trim()
-  otherErrors.illness    = f.critical_illness === 'Other' && !f.critical_illness_other?.trim()
+  otherErrors.illness = f.critical_illness === 'Other' && !f.critical_illness_other?.trim()
 
   if (Object.values(otherErrors).some(v => v)) {
     alertMsg.value = 'Please fill in all "Others - Please specify" fields.'
@@ -421,7 +420,10 @@ function handleNext() {
   if (f.critical_illness === 'Other' && f.critical_illness_other?.trim()) resolved.critical_illness = f.critical_illness_other.trim()
 
   // Required field check
-  const missing = REQUIRED.filter(k => !resolved[k]?.toString().trim())
+  const allRequired = resolved.has_child === 'Yes'
+    ? [...REQUIRED, 'number_children']
+    : REQUIRED
+  const missing = allRequired.filter(k => !resolved[k]?.toString().trim())
   if (missing.length) {
     alertMsg.value = 'Please complete all required fields before proceeding.'
     return
@@ -447,7 +449,24 @@ function handleNext() {
 </script>
 
 <style scoped>
-.section-card { background:#fff; border:1px solid #e8eaf6; border-radius:12px; padding:20px 24px; box-shadow:0 2px 8px rgba(63,81,181,.06); }
-.section-card-title { font-size:15px; font-weight:600; color:#7c3aed; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #e8eaf6; }
-.border-b-danger { border-bottom-color: #dc3545 !important; }
+.section-card {
+  background: #fff;
+  border: 1px solid #e8eaf6;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 8px rgba(63, 81, 181, .06);
+}
+
+.section-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #7c3aed;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e8eaf6;
+}
+
+.border-b-danger {
+  border-bottom-color: #dc3545 !important;
+}
 </style>
